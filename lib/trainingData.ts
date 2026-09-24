@@ -279,9 +279,9 @@ function buildDevelopmentPhase(): TrainingWeek[] {
     },
     // Week 4 — VITALITY 10K
     {
-      note: 'VITALITY 10K — 27 September 2026. Target sub-40:00 (4:00/km). Warm up 10 min easy. Go out at 3:58-4:00/km and hold. Don\'t go faster than 3:55/km in first 2km regardless of how good you feel.',
+      note: 'VITALITY 10K — 27 September 2026. Target sub-44:00 (4:21/km). Warm up 10 min easy. Go out at 4:20-4:22/km and hold. Don\'t go faster than 4:15/km in first 2km regardless of how good you feel.',
       sessions: [
-        { day: 'Sunday', type: 'Race', desc: 'VITALITY 10K — Target sub-40:00 (4:00/km)', mins: 50 },
+        { day: 'Sunday', type: 'Race', desc: 'VITALITY 10K — Target sub-44:00 (4:21/km)', mins: 50 },
       ],
     },
     // Week 5
@@ -375,7 +375,7 @@ function buildDevelopmentPhase(): TrainingWeek[] {
       description: s.desc,
       plannedMinutes: s.mins,
     }))
-    weeks.push({ weekNumber: i + 1, startDate: weekMonday, sessions })
+    weeks.push({ weekNumber: i + 1, startDate: weekMonday, sessions, note: (template as { note?: string }).note })
   })
 
   return weeks
