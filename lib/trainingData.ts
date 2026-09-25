@@ -279,7 +279,7 @@ function buildDevelopmentPhase(): TrainingWeek[] {
     },
     // Week 4 — VITALITY 10K
     {
-      note: 'VITALITY 10K — 27 September 2026. Target sub-44:00 (4:21/km). Warm up 10 min easy. Go out at 4:20-4:22/km and hold. Don\'t go faster than 4:15/km in first 2km regardless of how good you feel.',
+      note: 'VITALITY 10K — 27 September 2026. Target sub-44:00 (4:21/km). Warm up: 10 min easy jog, 4 x 20 sec strides (60 sec walk between), 2 min walk to start. Start 25 min before your wave. Go out at 4:20-4:22/km and hold. Don\'t go faster than 4:15/km in first 2km regardless of how good you feel.',
       sessions: [
         { day: 'Sunday', type: 'Race', desc: 'VITALITY 10K — Target sub-44:00 (4:21/km)', mins: 50 },
       ],
