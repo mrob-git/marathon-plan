@@ -284,14 +284,13 @@ function buildDevelopmentPhase(): TrainingWeek[] {
         { day: 'Sunday', type: 'Race', desc: 'VITALITY 10K — Target sub-44:00 (4:21/km)', mins: 50 },
       ],
     },
-    // Week 5
+    // Week 5 — volume rebuild post-race, no quality yet (CTL 26, needs 30+ before intensity returns)
     {
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Tempo', desc: 'Warm up + 40 min marathon tempo', mins: 70 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 75 },
-        { day: 'Sunday', type: 'Long', desc: 'Long run with 50 min at marathon pace', mins: 155 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
+        { day: 'Thursday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — below 148 bpm throughout', mins: 60 },
       ],
     },
     // Week 6
