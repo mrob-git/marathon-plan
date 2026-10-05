@@ -50,6 +50,7 @@ export interface SyncResult {
 }
 
 export type TabId =
+  | 'dashboard'
   | 'schedule'
   | 'base'
   | 'development'
