@@ -167,7 +167,7 @@ export default function DashboardTab({ refreshKey }: { refreshKey?: number }) {
       {!loading && !error && (
         <>
           {/* Row 1: Race countdown + Readiness */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '12px', marginBottom: '12px' }}>
             {/* Race Countdown */}
             <div style={{
               background: '#111118',
@@ -187,6 +187,9 @@ export default function DashboardTab({ refreshKey }: { refreshKey?: number }) {
               </div>
               <div style={{ color: '#94a3b8', fontSize: '10px', marginTop: '8px' }}>
                 {phase.name} — Week {week?.weekNumber ?? '?'}
+              </div>
+              <div style={{ color: '#64748b', fontSize: '10px', marginTop: '4px' }}>
+                27 April 2027
               </div>
             </div>
 
@@ -241,8 +244,23 @@ export default function DashboardTab({ refreshKey }: { refreshKey?: number }) {
             padding: '16px',
             marginBottom: '12px',
           }}>
-            <div style={{ color: '#64748b', fontSize: '10px', letterSpacing: '1px', marginBottom: '12px' }}>
-              THIS WEEK — {phase.name.toUpperCase()} W{week?.weekNumber}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+              <div style={{ color: '#64748b', fontSize: '10px', letterSpacing: '1px' }}>
+                THIS WEEK — {phase.name.toUpperCase()} W{week?.weekNumber}
+              </div>
+              {(() => {
+                const matched = week?.sessions.filter(s => runs.find(r => r.date === s.date)) ?? []
+                const totalKm = matched.reduce((sum, s) => {
+                  const r = runs.find(r2 => r2.date === s.date)
+                  return sum + (r ? parseFloat(r.distance_km) || 0 : 0)
+                }, 0)
+                return (
+                  <div style={{ fontSize: '10px', display: 'flex', gap: '12px' }}>
+                    <span style={{ color: '#4ade80' }}>{matched.length}/{week?.sessions.length ?? 0} done</span>
+                    {totalKm > 0 && <span style={{ color: '#94a3b8' }}>{totalKm.toFixed(1)} km</span>}
+                  </div>
+                )
+              })()}
             </div>
             {week?.sessions.map((session, i) => {
               // Check if this session has been done (date is in the past and matches a run)
@@ -297,7 +315,7 @@ export default function DashboardTab({ refreshKey }: { refreshKey?: number }) {
           </div>
 
           {/* Row 3: Fitness Trend + Recent Runs */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '12px', marginBottom: '12px' }}>
             {/* Fitness Trend */}
             <div style={{
               background: '#111118',
@@ -349,7 +367,7 @@ export default function DashboardTab({ refreshKey }: { refreshKey?: number }) {
                     <div style={{ color: '#94a3b8', fontSize: '12px' }}>{run.pace}</div>
                     {run.avg_hr && (
                       <div style={{ color: run.avg_hr > LT1 ? '#fbbf24' : '#64748b', fontSize: '10px' }}>
-                        {run.avg_hr} bpm{run.avg_hr > 170 ? ' 🔥' : ''}
+                        {run.avg_hr} bpm
                       </div>
                     )}
                   </div>
