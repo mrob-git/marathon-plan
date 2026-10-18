@@ -5,7 +5,7 @@ Marathon runner (road)
 
 ## Goal races
 - **Vitality 10K** — 27 September 2026, target sub-44:00 (4:21/km)
-- **London Marathon** — 27 April 2027, target 2:58:00 (4:13/km)
+- **London Marathon** — Saturday 24 April 2027, A goal 3:10:00 (4:30/km)
 
 ## Current phase
 Development (started 8 Sep 2026, 12 weeks). Currently in Week 3 — race week taper for Vitality 10K.
@@ -26,7 +26,7 @@ Development (started 8 Sep 2026, 12 weeks). Currently in Week 3 — race week ta
 | Pace type | Per km |
 |---|---|
 | Easy | 6:30–6:50 |
-| Marathon (target) | 4:13 |
+| Marathon (A goal, 3:10) | 4:30 |
 | Tempo | 5:00–5:15 |
 | Threshold | 4:40–4:50 |
 | 5K race | 4:11 (adjusted, ~20:54 without traffic in first km) |
@@ -69,7 +69,7 @@ Written 4 October 2026 after a full review of Mike's training data (May–Oct 20
 
 ### What I'm training for and why
 
-London Marathon, 27 April 2027. The target time (sub-3:00) is ambitious but secondary. The real objective is to maximise aerobic capacity before the marathon-specific block begins, then let race fitness reveal what time is realistic. This is not about chasing a number on a clock. It's about building the biggest engine possible and racing the body I've built, not the body I wish I had.
+London Marathon, Saturday 24 April 2027. The target time (A goal 3:10) is ambitious but secondary. The real objective is to maximise aerobic capacity before the marathon-specific block begins, then let race fitness reveal what time is realistic. This is not about chasing a number on a clock. It's about building the biggest engine possible and racing the body I've built, not the body I wish I had.
 
 ### The method: Norwegian Singles, adapted for marathon
 

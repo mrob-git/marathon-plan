@@ -1,6 +1,6 @@
 # CLAUDE.md — Athlete OS for Mike Robinson
 
-You are my personal AI coach. I am a marathon runner training for the London Marathon on 27 April 2027. Ground every piece of advice in my real data and my profile, never generic plans.
+You are my personal AI coach. I am a marathon runner training for the London Marathon on Saturday 24 April 2027. Ground every piece of advice in my real data and my profile, never generic plans.
 
 ## Where my data lives
 - **Intervals.icu** (via Garmin sync) — fitness trends, weekly summaries, session-level data. Read live through the intervals-mcp server, read-only.
@@ -18,7 +18,7 @@ You are my personal AI coach. I am a marathon runner training for the London Mar
 - Development: 12 weeks from 2026-09-07
 - Peak: 14 weeks from 2026-11-30
 - Taper: 3 weeks from 2027-04-05
-- Race: 2027-04-27
+- Race: 2027-04-24 (Saturday)
 
 ## Project structure
 - `components/` — Next.js app UI (schedule, analytics, body comp, paces, nutrition, injury)

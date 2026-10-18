@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { TRAINING_PLAN } from '@/lib/trainingData'
 
-const RACE_DATE = '2027-04-27'
+const RACE_DATE = '2027-04-24'
 const RACE_NAME = 'LONDON MARATHON'
 const RHR_BASELINE = [51, 54] // low, high
 const HRV_BASELINE_AVG = 52
@@ -189,7 +189,7 @@ export default function DashboardTab({ refreshKey }: { refreshKey?: number }) {
                 {phase.name} — Week {week?.weekNumber ?? '?'}
               </div>
               <div style={{ color: '#64748b', fontSize: '10px', marginTop: '4px' }}>
-                27 April 2027
+                Saturday 24 April 2027
               </div>
             </div>
 

@@ -7,7 +7,7 @@ export const PHASE_STARTS = {
   development: '2026-09-08', // 12 weeks
   peak: '2026-12-01',        // 14 weeks
   taper: '2027-04-06',       // 3 weeks
-  race: '2027-04-27',
+  race: '2027-04-24', // Saturday
 }
 
 function addDays(dateStr: string, days: number): string {
@@ -285,6 +285,7 @@ function buildDevelopmentPhase(): TrainingWeek[] {
       ],
     },
     // Week 5 — volume rebuild post-race, no quality yet (CTL 26, needs 30+ before intensity returns)
+    // Weeks 6-12 rewritten 15 Oct 2026: steady easy volume, one steady run, then one sub-threshold session
     {
       sessions: [
         { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
@@ -295,72 +296,72 @@ function buildDevelopmentPhase(): TrainingWeek[] {
     },
     // Week 6
     {
+      note: 'Rewritten 15 Oct. Steady easy volume. Easy runs HR under 150 (lab LT1 156).',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Intervals', desc: '8×1km at LT2 with 90s jog recovery', mins: 70 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 75 },
-        { day: 'Sunday', type: 'Long', desc: 'Long run with 60 min at marathon pace', mins: 160 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 42 },
+        { day: 'Thursday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 56 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150, 75 min cap', mins: 75 },
       ],
     },
     // Week 7
     {
+      note: 'Steady volume week 1. Thursday steady run added: top of aerobic range, never over LT1 (156).',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Tempo', desc: 'Warm up + 45 min marathon tempo', mins: 70 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: 'Long run with 70 min at marathon pace', mins: 165 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Steady', desc: 'Steady — 15 min easy, then HR 148-155 (never over 156), last 5 min easy', mins: 55 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150, 75 min cap', mins: 75 },
       ],
     },
-    // Week 8 — recovery
+    // Week 8
     {
+      note: 'Steady volume week 2.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy recovery run', mins: 50 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 45 },
-        { day: 'Thursday', type: 'Easy', desc: 'Easy recovery run', mins: 50 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Sunday', type: 'Long', desc: 'Easy long run', mins: 120 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Thursday', type: 'Steady', desc: 'Steady — 15 min easy, then HR 148-155 (never over 156), last 5 min easy', mins: 55 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150, 75 min cap', mins: 75 },
       ],
     },
     // Week 9
     {
+      note: 'Steady volume week 3.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Intervals', desc: '10×1km at LT2 with 90s jog recovery', mins: 75 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: 'Long run — 80 min at marathon pace', mins: 170 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Thursday', type: 'Steady', desc: 'Steady — 15 min easy, then HR 148-155 (never over 156), last 5 min easy', mins: 60 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150, 75 min cap', mins: 75 },
       ],
     },
     // Week 10
     {
+      note: 'Steady volume week 4. Gate for next week: CTL above 30, 4 runs a week for 2 weeks, no niggles. Otherwise repeat this week.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Tempo', desc: 'Warm up + 50 min marathon tempo', mins: 75 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: 'Long run — 90 min at marathon pace', mins: 175 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Thursday', type: 'Steady', desc: 'Steady — 15 min easy, then HR 148-155 (never over 156), last 5 min easy', mins: 60 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150, 75 min cap', mins: 75 },
       ],
     },
     // Week 11
     {
+      note: 'First sub-threshold session. Reps HR 157-163, should feel too easy. Stop if anything tweaks.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Thursday', type: 'Intervals', desc: '5×2km at LT2 with 2 min jog recovery', mins: 75 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: 'Long run — race simulation effort', mins: 180 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 10 min WU + 5 x 3 min at 4:50-5:00/km (HR 157-163), 60 sec jog + 10 min CD', mins: 45 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150, 75 min cap', mins: 75 },
       ],
     },
-    // Week 12 — transition recovery
+    // Week 12
     {
+      note: 'Sub-threshold week 2. Development phase finale.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy recovery run', mins: 50 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 45 },
-        { day: 'Thursday', type: 'Easy', desc: 'Easy recovery run', mins: 50 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Sunday', type: 'Long', desc: 'Easy long run — development phase finale', mins: 130 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 10 min WU + 6 x 3 min at 4:50-5:00/km (HR 157-163), 60 sec jog + 10 min CD', mins: 50 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150, 75 min cap', mins: 75 },
       ],
     },
   ]
@@ -572,8 +573,8 @@ function buildTaperPhase(): TrainingWeek[] {
       sessions: [
         { day: 'Tuesday', type: 'Easy', desc: 'Easy shakeout — 20 min', mins: 20 },
         { day: 'Thursday', type: 'Strides', desc: '15 min easy + 4×100m strides', mins: 20 },
-        { day: 'Saturday', type: 'Easy', desc: '10 min easy shakeout', mins: 10 },
-        { day: 'Sunday', type: 'Race', desc: 'LONDON MARATHON — Target 2:58:00', mins: 178 },
+        { day: 'Friday', type: 'Easy', desc: '10 min easy shakeout', mins: 10 },
+        { day: 'Saturday', type: 'Race', desc: 'LONDON MARATHON — Saturday 24 April. A goal 3:10:00 (4:30/km)', mins: 190 },
       ],
     },
   ]
@@ -619,7 +620,7 @@ export const TRAINING_PLAN: Record<string, Phase> = {
     id: 'taper',
     name: 'Taper',
     startDate: PHASE_STARTS.taper,
-    endDate: '2027-04-27',
+    endDate: '2027-04-24',
     weeks: buildTaperPhase(),
   },
 }
