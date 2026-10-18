@@ -4,46 +4,47 @@ export default function PacesTab() {
       name: 'Recovery',
       bpm: '< 125',
       color: '#64748b',
-      pace: '> 5:30/km',
-      description: 'Complete recovery. Post-hard effort days. Feel very easy.',
+      pace: '> 6:45/km',
+      description: 'Complete recovery. Warm-ups, cool-downs and jog recoveries.',
     },
     {
-      name: 'Aerobic 1',
-      bpm: '126–139',
+      name: 'Easy',
+      bpm: '125–150',
       color: '#60a5fa',
-      pace: '5:00–5:30/km',
-      description: 'Base building. Conversational. Easy run default zone. All easy days target here.',
+      pace: '6:00–6:40/km',
+      description: 'All easy runs and the easy part of long runs. Ceiling 150, a buffer under LT1. Let pace drift with HR, not the other way round.',
     },
     {
-      name: 'Aerobic 2',
-      bpm: '140–156',
-      color: '#4ade80',
-      pace: '4:30–5:00/km',
-      description: 'Upper aerobic. LT1 ceiling at 156 bpm (2.0 mMol/L lactate). Comfortable but purposeful.',
+      name: 'Steady',
+      bpm: '151–156',
+      color: '#2dd4bf',
+      pace: '5:30–5:50/km',
+      description: 'Up to LT1 (156 bpm, 2.0 mMol/L). Thursday steady runs in Development weeks 7-10.',
     },
     {
-      name: 'Tempo',
+      name: 'Sub-threshold',
       bpm: '157–169',
       color: '#fbbf24',
-      pace: '4:15–4:30/km',
-      description: 'Comfortably hard. Between LT1 and LT2. Marathon pace is top of this zone.',
+      pace: '4:30–4:55/km',
+      description: 'Between LT1 and LT2. Thursday reps sit at 157-163 and should feel too easy. Marathon pace (4:30/km) falls in this zone.',
     },
     {
-      name: 'LT2 / Race',
+      name: 'LT2 and above',
       bpm: '170+',
       color: '#f87171',
-      pace: '< 4:15/km',
-      description: 'At or above LT2 (4.0 mMol/L at 170 bpm). Interval work. Unsustainable beyond ~60 min.',
+      pace: '< 4:25/km',
+      description: 'At or above LT2 (4.0 mMol/L at 170 bpm). Races only; no VO2max work in this plan.',
     },
   ]
 
   const targetPaces = [
-    { label: 'Marathon target (3:10)', pace: '4:30/km', hr: '~170 bpm', notes: 'LT2 / race ceiling' },
-    { label: 'Marathon pace zone', pace: '4:10–4:20/km', hr: '165–170 bpm', notes: 'Race effort' },
-    { label: 'Tempo (LT1–LT2)', pace: '4:15–4:30/km', hr: '157–169 bpm', notes: 'Quality sessions' },
-    { label: 'Long run', pace: '4:45–5:10/km', hr: '140–156 bpm', notes: 'Aerobic 2 zone' },
-    { label: 'Easy run', pace: '5:00–5:30/km', hr: '126–139 bpm', notes: 'Aerobic 1 zone' },
-    { label: 'Recovery jog', pace: '> 5:30/km', hr: '< 125 bpm', notes: 'Full recovery' },
+    { label: 'Marathon target (3:10)', pace: '4:30/km', hr: 'under 165 bpm', notes: 'A goal. Race effort and long-run finishes' },
+    { label: 'Half marathon tune-up', pace: '4:15–4:20/km', hr: '165–170 bpm', notes: 'Feb 2027 check on 3:10' },
+    { label: 'Sub-threshold reps', pace: '4:45–4:55/km', hr: '157–163 bpm', notes: 'Thursday quality' },
+    { label: 'Steady run', pace: '5:30–5:50/km', hr: '148–155 bpm', notes: 'Never over LT1' },
+    { label: 'Long run (easy part)', pace: '6:00–6:30/km', hr: 'under 150 bpm', notes: 'Easy zone' },
+    { label: 'Easy run', pace: '6:00–6:40/km', hr: 'under 150 bpm', notes: 'Easy zone' },
+    { label: 'Recovery jog', pace: '> 6:45/km', hr: '< 125 bpm', notes: 'Full recovery' },
   ]
 
   return (
@@ -62,7 +63,7 @@ export default function PacesTab() {
           HR ZONES — LAB CONFIRMED
         </div>
         <div style={{ color: '#64748b', fontSize: '11px' }}>
-          Focused Running lactate test · May 2024 · Max HR: 191 bpm · LT1: 156 bpm · LT2: 170 bpm
+          Focused Running lactate test · May 2024 · LT1: 156 bpm · LT2: 170 bpm · Max HR: 194 bpm (observed Sep 2026)
         </div>
       </div>
 
@@ -159,10 +160,10 @@ export default function PacesTab() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
           {[
-            { label: 'Max HR', value: '191 bpm' },
+            { label: 'Max HR', value: '194 bpm' },
             { label: 'LT1', value: '156 bpm' },
             { label: 'LT2', value: '170 bpm' },
-            { label: 'Easy ceiling', value: '134 bpm (70% max)' },
+            { label: 'Easy ceiling', value: '150 bpm' },
             { label: 'Weight', value: '71.2 kg' },
             { label: 'Height', value: '178 cm' },
             { label: 'Age', value: '34' },
