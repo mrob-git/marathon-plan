@@ -5,8 +5,8 @@ import { Phase, TrainingWeek, TrainingSession } from './types'
 export const PHASE_STARTS = {
   base: '2026-05-05',        // 18 weeks
   development: '2026-09-08', // 12 weeks
-  peak: '2026-12-01',        // 14 weeks
-  taper: '2027-04-06',       // 3 weeks
+  peak: '2026-11-30',        // 18 weeks
+  taper: '2027-04-05',       // 3 weeks
   race: '2027-04-24', // Saturday
 }
 
@@ -381,7 +381,9 @@ function buildDevelopmentPhase(): TrainingWeek[] {
   return weeks
 }
 
-// PEAK PHASE — 14 weeks, starting 1 Dec 2026
+// PEAK PHASE — 18 weeks, 30 Nov 2026 to 4 Apr 2027 (rewritten 18 Oct 2026 for the 3:10 A goal)
+// Zones from the May 2024 lab test: easy under 150, LT1 156, sub-threshold reps 157-163, LT2 170.
+// One quality day (Thursday) plus a marathon-pace finish on the long run from week 7. 3 build weeks + 1 recovery.
 function buildPeakPhase(): TrainingWeek[] {
   const weeks: TrainingWeek[] = []
   const firstMonday = '2026-11-30' // Monday of week containing 1 Dec
@@ -389,142 +391,196 @@ function buildPeakPhase(): TrainingWeek[] {
   const weekTemplates = [
     // Week 1
     {
+      note: 'Peak 1. Build block 1 of 4. Thursday reps carry on from Development; long run starts growing.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 45 min at marathon pace (170 bpm / 4:15/km)', mins: 70 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 75 },
-        { day: 'Sunday', type: 'Long', desc: '30 km long run with last 10 km at marathon pace', mins: 175 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 6 x 4 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 54 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 85 },
       ],
     },
     // Week 2
     {
+      note: 'Peak 2.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 50 min at marathon pace', mins: 75 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 75 },
-        { day: 'Sunday', type: 'Long', desc: '32 km long run with last 12 km at marathon pace', mins: 185 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 5 x 5 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 54 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 95 },
       ],
     },
     // Week 3
     {
+      note: 'Peak 3. Strides added on Tuesday.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Intervals', desc: '5×1 mile at LT2 with 2 min recovery', mins: 75 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: '33 km long run — strong finish', mins: 190 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 6 x 5 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 60 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 105 },
       ],
     },
-    // Week 4 — recovery
+    // Week 4
     {
+      note: 'Peak 4 — recovery week over Christmas. Cut volume, keep it easy and flexible around plans.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy recovery run', mins: 50 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 45 },
-        { day: 'Thursday', type: 'Easy', desc: 'Easy recovery run', mins: 50 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Sunday', type: 'Long', desc: 'Easy long run', mins: 140 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 4 x 4 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 44 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 50 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 80 },
       ],
     },
     // Week 5
     {
+      note: 'Peak 5. Build block 2. Wednesday easy run comes back: five runs a week from here.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 55 min at marathon pace', mins: 75 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: '34 km long run with last 15 km at marathon pace', mins: 195 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150, keep it very easy', mins: 35 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 4 x 8 min at HR 157-163 (~4:45-4:55/km), 90 sec jog + 10 min CD', mins: 62 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 110 },
       ],
     },
     // Week 6
     {
+      note: 'Peak 6.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Thursday', type: 'Intervals', desc: '3×3km at LT2 with 3 min recovery', mins: 80 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: '35 km long run — peak long run', mins: 200 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 40 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 5 x 8 min at HR 157-163 (~4:45-4:55/km), 90 sec jog + 10 min CD', mins: 71 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 120 },
       ],
     },
     // Week 7
     {
+      note: 'Peak 7. First marathon-pace finish on the long run. Only one new thing this week.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 60 min at marathon pace', mins: 80 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: '35 km long run — repeat peak run', mins: 200 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 40 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 5 x 8 min at HR 157-163 (~4:45-4:55/km), 90 sec jog + 10 min CD', mins: 71 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 20 min at marathon pace 4:30/km (HR under 165)', mins: 125 },
       ],
     },
-    // Week 8 — recovery
+    // Week 8
     {
+      note: 'Peak 8 — recovery week. Thursday light, long run easy.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy recovery run', mins: 50 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 45 },
-        { day: 'Thursday', type: 'Easy', desc: 'Easy recovery run', mins: 50 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Sunday', type: 'Long', desc: 'Easy long run', mins: 150 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 50 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 35 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 4 x 5 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 48 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 95 },
       ],
     },
     // Week 9
     {
+      note: 'Peak 9. Build block 3. Longer sub-threshold reps.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 65 min at marathon pace', mins: 80 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: '33 km long run — strong marathon pace finish', mins: 195 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 65 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 3 x 12 min at HR 157-163 (~4:45-4:55/km), 120 sec jog + 10 min CD', mins: 65 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 30 min at marathon pace 4:30/km (HR under 165)', mins: 135 },
       ],
     },
     // Week 10
     {
+      note: 'Peak 10.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Thursday', type: 'Intervals', desc: '4×2 miles at LT2 with 3 min recovery', mins: 80 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 80 },
-        { day: 'Sunday', type: 'Long', desc: '32 km long run with 20 km at marathon pace', mins: 190 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 65 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 4 x 10 min at HR 157-163 (~4:45-4:55/km), 90 sec jog + 10 min CD', mins: 70 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 70 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 35 min at marathon pace 4:30/km (HR under 165)', mins: 140 },
       ],
     },
     // Week 11
     {
+      note: 'Peak 11.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 60 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 60 min at marathon pace', mins: 80 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 75 },
-        { day: 'Sunday', type: 'Long', desc: '30 km long run — begin taper down', mins: 180 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 65 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 3 x 15 min at HR 157-163 (~4:45-4:55/km), 120 sec jog + 10 min CD', mins: 74 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 70 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 40 min at marathon pace 4:30/km (HR under 165)', mins: 145 },
       ],
     },
-    // Week 12 — begin taper
+    // Week 12
     {
+      note: 'Peak 12 — recovery week with a half marathon tune-up on Sunday (race or solo time trial, event to confirm). Target sub-1:30 checks 3:10 is on.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 50 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 45 min at marathon pace', mins: 65 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 65 },
-        { day: 'Sunday', type: 'Long', desc: '26 km long run', mins: 155 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 50 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 35 },
+        { day: 'Thursday', type: 'Intervals', desc: '15 min WU + 4 x 3 min at HR 157-163, 60 sec jog + 10 min CD — sharpener', mins: 40 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy 20 min + 4 x 20 sec strides', mins: 25 },
+        { day: 'Sunday', type: 'Race', desc: 'HALF MARATHON TUNE-UP — even pacing, aim 4:15-4:20/km', mins: 110 },
       ],
     },
     // Week 13
     {
+      note: 'Peak 13. Build block 4. Easy week after the half for the first 3 days, then back to the plan.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 50 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 45 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 35 min at marathon pace', mins: 55 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 55 },
-        { day: 'Sunday', type: 'Long', desc: '22 km long run', mins: 135 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 50 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 40 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 3 x 15 min at HR 157-163 (~4:45-4:55/km), 120 sec jog + 10 min CD', mins: 74 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 70 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 40 min at marathon pace 4:30/km (HR under 165)', mins: 150 },
       ],
     },
-    // Week 14 — final peak week
+    // Week 14
     {
+      note: 'Peak 14.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 45 },
-        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run', mins: 40 },
-        { day: 'Thursday', type: 'Strides', desc: 'Easy + 6×20s race pace strides', mins: 45 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 45 },
-        { day: 'Sunday', type: 'Long', desc: '18 km easy run — peak phase done', mins: 110 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 65 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 2 x 20 min at HR 157-163 (~4:45-4:55/km), 180 sec jog + 10 min CD', mins: 68 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 70 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 45 min at marathon pace 4:30/km (HR under 165)', mins: 160 },
+      ],
+    },
+    // Week 15
+    {
+      note: 'Peak 15.',
+      sessions: [
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 3 x 15 min at HR 157-163 (~4:45-4:55/km), 120 sec jog + 10 min CD', mins: 74 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 50 min at marathon pace 4:30/km (HR under 165)', mins: 170 },
+      ],
+    },
+    // Week 16
+    {
+      note: 'Peak 16 — recovery week.',
+      sessions: [
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 50 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 40 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 4 x 6 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 52 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 110 },
+      ],
+    },
+    // Week 17
+    {
+      note: 'Peak 17. Biggest week.',
+      sessions: [
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 2 x 20 min at HR 157-163 (~4:45-4:55/km), 180 sec jog + 10 min CD', mins: 68 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 55 min at marathon pace 4:30/km (HR under 165)', mins: 175 },
+      ],
+    },
+    // Week 18
+    {
+      note: 'Peak 18. Final long run (~32 km), three weeks before race day.',
+      sessions: [
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 3 x 12 min at HR 157-163 (~4:45-4:55/km), 120 sec jog + 10 min CD', mins: 65 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 60 min at marathon pace 4:30/km (HR under 165) — dress rehearsal: race kit, race breakfast, 120 g carbs/hr', mins: 180 },
       ],
     },
   ]
@@ -538,13 +594,13 @@ function buildPeakPhase(): TrainingWeek[] {
       description: s.desc,
       plannedMinutes: s.mins,
     }))
-    weeks.push({ weekNumber: i + 1, startDate: weekMonday, sessions })
+    weeks.push({ weekNumber: i + 1, startDate: weekMonday, sessions, note: (template as { note?: string }).note })
   })
 
   return weeks
 }
 
-// TAPER PHASE — 3 weeks, starting 6 April 2027
+// TAPER PHASE — 3 weeks, 5 April to race day Saturday 24 April 2027
 function buildTaperPhase(): TrainingWeek[] {
   const weeks: TrainingWeek[] = []
   const firstMonday = '2027-04-05'
@@ -552,27 +608,33 @@ function buildTaperPhase(): TrainingWeek[] {
   const weekTemplates = [
     // Taper week 1
     {
+      note: 'Taper 1. Volume down about 20%, keep some sharpness.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 40 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 25 min at marathon pace', mins: 45 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run', mins: 40 },
-        { day: 'Sunday', type: 'Long', desc: '16 km easy run', mins: 95 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 55 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 40 },
+        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 3 x 10 min at HR 157-163, 90 sec jog + 10 min CD', mins: 58 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Sunday', type: 'Long', desc: 'Long run — easy (HR under 150), last 30 min at marathon pace 4:30/km (HR under 165)', mins: 120 },
       ],
     },
     // Taper week 2
     {
+      note: 'Taper 2. Volume down about 40%. Last marathon-pace session Thursday.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run', mins: 35 },
-        { day: 'Thursday', type: 'Marathon Pace', desc: 'Warm up + 15 min at marathon pace + 4×100m strides', mins: 40 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy shakeout run', mins: 30 },
-        { day: 'Sunday', type: 'Easy', desc: '10 km easy run', mins: 55 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 45 },
+        { day: 'Wednesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 35 },
+        { day: 'Thursday', type: 'Marathon Pace', desc: '15 min WU + 20 min at marathon pace 4:30/km + 10 min CD', mins: 45 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 45 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy 80 min, last 15 at marathon pace', mins: 80 },
       ],
     },
-    // Race week
+    // Taper week 3
     {
+      note: 'Race week. Carb load from Thursday. Race Saturday 24 April: go out at 4:30-4:32/km, nothing faster than 4:28 in the first 5 km.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy shakeout — 20 min', mins: 20 },
-        { day: 'Thursday', type: 'Strides', desc: '15 min easy + 4×100m strides', mins: 20 },
+        { day: 'Monday', type: 'Easy', desc: 'Easy 30 min', mins: 30 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy 35 min + 4 x 1 min at marathon pace', mins: 35 },
+        { day: 'Thursday', type: 'Strides', desc: 'Easy 25 min + 4 x 20 sec strides', mins: 25 },
         { day: 'Friday', type: 'Easy', desc: '10 min easy shakeout', mins: 10 },
         { day: 'Saturday', type: 'Race', desc: 'LONDON MARATHON — Saturday 24 April. A goal 3:10:00 (4:30/km)', mins: 190 },
       ],
@@ -588,7 +650,7 @@ function buildTaperPhase(): TrainingWeek[] {
       description: s.desc,
       plannedMinutes: s.mins,
     }))
-    weeks.push({ weekNumber: i + 1, startDate: weekMonday, sessions })
+    weeks.push({ weekNumber: i + 1, startDate: weekMonday, sessions, note: (template as { note?: string }).note })
   })
 
   return weeks
@@ -613,7 +675,7 @@ export const TRAINING_PLAN: Record<string, Phase> = {
     id: 'peak',
     name: 'Peak Phase',
     startDate: PHASE_STARTS.peak,
-    endDate: '2027-04-05',
+    endDate: '2027-04-04',
     weeks: buildPeakPhase(),
   },
   taper: {

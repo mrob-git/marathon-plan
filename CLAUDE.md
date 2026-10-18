@@ -16,7 +16,7 @@ You are my personal AI coach. I am a marathon runner training for the London Mar
 ## Training phases
 - Base: 18 weeks from 2026-05-04
 - Development: 12 weeks from 2026-09-07
-- Peak: 14 weeks from 2026-11-30
+- Peak: 18 weeks from 2026-11-30
 - Taper: 3 weeks from 2027-04-05
 - Race: 2027-04-24 (Saturday)
 
