@@ -7,6 +7,7 @@ const TYPE_COLORS: Record<string, string> = {
   Easy: '#60a5fa',
   Long: '#4ade80',
   Tempo: '#fbbf24',
+  Steady: '#2dd4bf',
   'Marathon Pace': '#fb923c',
   Intervals: '#f87171',
   Strides: '#a78bfa',

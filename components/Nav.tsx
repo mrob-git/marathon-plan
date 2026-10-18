@@ -42,7 +42,7 @@ export default function Nav({ active, onSelect, onSync, syncing, lastSync }: Nav
         <span style={{ color: '#4ade80', fontWeight: 'bold', fontSize: '13px', letterSpacing: '1px' }}>
           LDN 2027
         </span>
-        <span style={{ color: '#64748b', fontSize: '11px', marginLeft: '8px' }}>2:58:00</span>
+        <span style={{ color: '#64748b', fontSize: '11px', marginLeft: '8px' }}>3:10:00</span>
       </div>
 
       {TABS.map((tab) => (

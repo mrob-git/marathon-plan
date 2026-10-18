@@ -38,7 +38,7 @@ export default function PacesTab() {
   ]
 
   const targetPaces = [
-    { label: 'Marathon target (2:58)', pace: '4:14/km', hr: '~170 bpm', notes: 'LT2 / race ceiling' },
+    { label: 'Marathon target (3:10)', pace: '4:30/km', hr: '~170 bpm', notes: 'LT2 / race ceiling' },
     { label: 'Marathon pace zone', pace: '4:10–4:20/km', hr: '165–170 bpm', notes: 'Race effort' },
     { label: 'Tempo (LT1–LT2)', pace: '4:15–4:30/km', hr: '157–169 bpm', notes: 'Quality sessions' },
     { label: 'Long run', pace: '4:45–5:10/km', hr: '140–156 bpm', notes: 'Aerobic 2 zone' },
@@ -167,7 +167,7 @@ export default function PacesTab() {
             { label: 'Height', value: '178 cm' },
             { label: 'Age', value: '34' },
             { label: 'BMR', value: '1,734 kcal' },
-            { label: 'Target', value: 'Sub-3 · 2:58:00' },
+            { label: 'Target', value: 'A goal · 3:10:00' },
           ].map((item) => (
             <div key={item.label}>
               <div style={{ color: '#64748b', fontSize: '9px', letterSpacing: '0.5px' }}>{item.label.toUpperCase()}</div>
