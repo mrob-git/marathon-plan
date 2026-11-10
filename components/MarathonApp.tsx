@@ -13,8 +13,8 @@ import AnalyticsTab from './AnalyticsTab'
 import BodyCompTab from './BodyCompTab'
 import DashboardTab from './DashboardTab'
 
-export default function MarathonApp() {
-  const [activeTab, setActiveTab] = useState<TabId>('dashboard')
+export default function MarathonApp({ initialTab = 'dashboard' }: { initialTab?: TabId }) {
+  const [activeTab, setActiveTab] = useState<TabId>(initialTab)
   const [syncing, setSyncing] = useState(false)
   const [lastSync, setLastSync] = useState<string | null>(null)
   const [syncMessage, setSyncMessage] = useState<string | null>(null)
