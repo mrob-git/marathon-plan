@@ -293,7 +293,8 @@ function Splits({ splits, sessionType }: { splits: { km: number; secs: number; h
   const slowest = Math.max(...splits.map((s) => s.secs))
   const range = Math.max(30, slowest - fastest)
   return (
-    <div style={{ display: 'flex', gap: '3px', marginTop: '8px', alignItems: 'flex-end', height: '58px', overflowX: 'auto' }}>
+    <div style={{ marginTop: '8px' }}>
+    <div style={{ display: 'flex', gap: '3px', alignItems: 'flex-end', overflowX: 'auto' }}>
       {splits.map((s) => {
         const h = 14 + ((slowest - s.secs) / range) * 26 // faster = taller
         const over = cap !== null && s.hr !== undefined && s.hr > cap
@@ -305,6 +306,10 @@ function Splits({ splits, sessionType }: { splits: { km: number; secs: number; h
           </div>
         )
       })}
+    </div>
+    <div style={{ color: '#475569', fontSize: '8px', marginTop: '4px' }}>
+      bars = pace per km (taller is faster) · numbers = avg HR{cap !== null ? `, amber over ${cap}` : ''}
+    </div>
     </div>
   )
 }
