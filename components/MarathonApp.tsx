@@ -24,6 +24,19 @@ export default function MarathonApp({ initialTab = 'dashboard' }: { initialTab?:
   useEffect(() => {
     const stored = localStorage.getItem('marathonLastSync')
     if (stored) setLastSync(stored)
+    // Quiet sync on open when the last one is over six hours old (or never).
+    const age = stored ? Date.now() - new Date(stored).getTime() : Infinity
+    if (age > 6 * 3600 * 1000) {
+      fetch('/api/sync', { method: 'POST' })
+        .then((r) => r.json())
+        .then((data) => {
+          const now = new Date().toISOString()
+          setLastSync(now)
+          localStorage.setItem('marathonLastSync', now)
+          if (data?.matched > 0) setRefreshKey((k) => k + 1)
+        })
+        .catch(() => { /* button still works */ })
+    }
   }, [])
 
   async function handleSync() {

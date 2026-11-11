@@ -214,6 +214,7 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
     }
   }
   const uniqueRuns = Array.from(runsByDate.values()).slice(0, 5)
+  const detailByDate = new Map(Object.values(logs).filter(l => l?.strava).map(l => [l.date, l.strava!]))
 
   return (
     <div style={{ padding: '16px', maxWidth: '900px', margin: '0 auto' }}>
@@ -380,6 +381,8 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
                     </div>
                     <div style={{ color: '#64748b', fontSize: '10px' }}>
                       {parseFloat(run.distance_km).toFixed(1)}km · {run.duration}
+                      {detailByDate.get(run.date)?.shoes ? ` · ${detailByDate.get(run.date)!.shoes}` : ''}
+                      {detailByDate.get(run.date)?.tempC !== undefined ? ` · ${detailByDate.get(run.date)!.tempC}°C` : ''}
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>

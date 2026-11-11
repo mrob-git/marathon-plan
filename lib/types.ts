@@ -12,6 +12,21 @@ export interface RunLog {
   rpe?: number
   feel?: 'great' | 'ok' | 'rough'
   niggleNote?: string
+  // Pulled from Strava by the sync (splits, shoes, elevation, HR drift, weather at the start).
+  strava?: StravaDetail
+}
+
+export interface StravaDetail {
+  id: number
+  name: string
+  shoes?: string
+  elevation?: number // m gained
+  splits: { km: number; secs: number; hr?: number }[] // per full km, secs normalised to 1 km
+  hrDrift?: number // bpm, last 3 km minus first 3 km
+  tempC?: number
+  windKph?: number
+  weather?: string
+  fetchedAt: number
 }
 
 export interface BodyCompEntry {
