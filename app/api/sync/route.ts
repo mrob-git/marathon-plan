@@ -215,6 +215,9 @@ export async function POST(): Promise<NextResponse> {
         // Keep anything typed in by hand on the Schedule tab.
         gapPerKm: existing?.gapPerKm,
         notes: existing?.notes,
+        rpe: existing?.rpe,
+        feel: existing?.feel,
+        niggleNote: existing?.niggleNote,
       }
 
       if (

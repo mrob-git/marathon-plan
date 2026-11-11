@@ -46,8 +46,12 @@ Go beyond "completed or missed". For each session:
 - CTL trend: climbing, flat or dropping? Ramp rate?
 - Training load distribution: what percentage of load came from quality vs easy?
 
-### 4. Ask how the week felt
-Ask Mike these questions (wait for answers before proceeding):
+### 4. Read the check-ins, then ask only what's missing
+Mike logs a check-in after each run on the app's Today screen (effort 1-10, felt great/ok/rough, any niggle) and keeps a niggle log. Read them first:
+- `GET https://marathon-plan-alpha.vercel.app/api/runs?phase=<phase>` — each log may carry `rpe`, `feel`, `niggleNote`
+- `GET https://marathon-plan-alpha.vercel.app/api/niggles` — open and resolved entries with severity and dates
+
+Only ask Mike the questions below that the check-ins don't already answer (wait for answers before proceeding):
 - Energy and motivation this week: 1-5?
 - Sleep quality: any bad nights?
 - Any soreness or niggles, and where?

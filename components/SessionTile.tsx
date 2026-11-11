@@ -43,6 +43,9 @@ export default function SessionTile({ session, log, onSave }: SessionTileProps) 
       gapPerKm: form.gapPerKm,
       trainingLoad: form.trainingLoad ? Number(form.trainingLoad) : undefined,
       notes: form.notes,
+      rpe: form.rpe ? Number(form.rpe) : undefined,
+      feel: form.feel,
+      niggleNote: form.niggleNote,
     }
     await onSave(runLog)
     setSaving(false)
@@ -126,6 +129,13 @@ export default function SessionTile({ session, log, onSave }: SessionTileProps) 
           {log?.pacePerKm && <Stat label="PACE" value={log.pacePerKm} color="#60a5fa" />}
           {log?.gapPerKm && <Stat label="GAP" value={log.gapPerKm} color="#a78bfa" />}
           {log?.trainingLoad && <Stat label="LOAD" value={`${log.trainingLoad}`} color="#94a3b8" />}
+          {log?.rpe && <Stat label="EFFORT" value={`${log.rpe}/10`} color={log.rpe <= 4 ? '#4ade80' : log.rpe <= 7 ? '#fbbf24' : '#f87171'} />}
+          {log?.feel && <Stat label="FELT" value={log.feel.toUpperCase()} color={log.feel === 'great' ? '#4ade80' : log.feel === 'rough' ? '#f87171' : '#60a5fa'} />}
+        </div>
+      )}
+      {hasLog && log?.niggleNote && (
+        <div style={{ color: '#fbbf24', fontSize: '11px', marginTop: '6px' }} onClick={(e) => e.stopPropagation()}>
+          Niggle: {log.niggleNote}
         </div>
       )}
 
@@ -180,6 +190,32 @@ export default function SessionTile({ session, log, onSave }: SessionTileProps) 
               value={form.trainingLoad?.toString() ?? ''}
               onChange={(v) => setForm((f) => ({ ...f, trainingLoad: Number(v) }))}
               type="number"
+            />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '8px' }}>
+            <Field
+              label="Effort 1-10"
+              value={form.rpe?.toString() ?? ''}
+              onChange={(v) => setForm((f) => ({ ...f, rpe: Number(v) }))}
+              type="number"
+            />
+            <div>
+              <label style={{ color: '#64748b', fontSize: '9px', letterSpacing: '0.5px', display: 'block', marginBottom: '3px' }}>FELT</label>
+              <select
+                value={form.feel ?? ''}
+                onChange={(e) => setForm((f) => ({ ...f, feel: (e.target.value || undefined) as RunLog['feel'] }))}
+                style={{ width: '100%', background: '#0a0a0f', border: '1px solid #2a2a3a', borderRadius: '3px', padding: '4px 8px', color: '#e2e8f0', fontSize: '12px', fontFamily: 'inherit', outline: 'none' }}
+              >
+                <option value="">—</option>
+                <option value="great">Great</option>
+                <option value="ok">OK</option>
+                <option value="rough">Rough</option>
+              </select>
+            </div>
+            <Field
+              label="Niggle"
+              value={form.niggleNote ?? ''}
+              onChange={(v) => setForm((f) => ({ ...f, niggleNote: v }))}
             />
           </div>
           <Field

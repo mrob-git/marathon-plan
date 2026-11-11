@@ -1,6 +1,6 @@
 // KV abstraction — uses Vercel KV in production, falls back to in-memory store in dev
 import { kv } from '@vercel/kv'
-import { RunLog, BodyCompEntry, NiggleStatus } from './types'
+import { RunLog, BodyCompEntry, NiggleStatus, NiggleEntry } from './types'
 import { NutritionDay } from './nutrition'
 
 // --- Run logs ---
@@ -80,6 +80,16 @@ export async function getNiggleStatus(): Promise<NiggleStatus | null> {
 
 export async function setNiggleStatus(status: NiggleStatus): Promise<void> {
   await kv.set('niggles:status', status)
+}
+
+// --- Niggle log (dated entries, newest first) ---
+export async function getNiggleLog(): Promise<NiggleEntry[]> {
+  const log = await kv.get<NiggleEntry[]>('niggles:log')
+  return log ?? []
+}
+
+export async function saveNiggleLog(log: NiggleEntry[]): Promise<void> {
+  await kv.set('niggles:log', log)
 }
 
 // --- Sync state ---
