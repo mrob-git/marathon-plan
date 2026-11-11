@@ -39,6 +39,7 @@ async function callIntervalsMCP(limit: number): Promise<IntervalsRun[]> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
+    cache: 'no-store',
     signal: AbortSignal.timeout(15000),
   })
 
