@@ -1,6 +1,7 @@
 // KV abstraction — uses Vercel KV in production, falls back to in-memory store in dev
 import { kv } from '@vercel/kv'
 import { RunLog, BodyCompEntry } from './types'
+import { NutritionDay } from './nutrition'
 
 // --- Run logs ---
 export async function getRunLog(phaseId: string, wk: number, day: string): Promise<RunLog | null> {
@@ -45,6 +46,27 @@ export async function saveBodyCompEntry(entry: BodyCompEntry): Promise<void> {
     existing.sort((a, b) => a.date.localeCompare(b.date))
   }
   await kv.set('bodycomp:entries', existing)
+}
+
+// --- Nutrition log (one record per day) ---
+export async function getNutritionDays(from: string, to: string): Promise<Record<string, NutritionDay>> {
+  const keys = await kv.keys('nutrition:*')
+  const wanted = keys.filter((k) => {
+    const date = k.slice('nutrition:'.length)
+    return date >= from && date <= to
+  })
+  if (!wanted.length) return {}
+  const values = await kv.mget<NutritionDay[]>(...wanted)
+  const result: Record<string, NutritionDay> = {}
+  wanted.forEach((key, i) => {
+    const v = values[i]
+    if (v) result[v.date] = v
+  })
+  return result
+}
+
+export async function saveNutritionDay(day: NutritionDay): Promise<void> {
+  await kv.set(`nutrition:${day.date}`, day)
 }
 
 // --- Sync state ---
