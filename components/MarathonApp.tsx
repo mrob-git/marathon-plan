@@ -2,16 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { TabId } from '@/lib/types'
-import { TRAINING_PLAN } from '@/lib/trainingData'
 import Nav from './Nav'
 import ScheduleTab from './ScheduleTab'
-import PhaseSummaryTab from './PhaseSummaryTab'
 import PacesTab from './PacesTab'
 import NutritionTab from './NutritionTab'
 import InjuryTab from './InjuryTab'
 import AnalyticsTab from './AnalyticsTab'
 import BodyCompTab from './BodyCompTab'
 import DashboardTab from './DashboardTab'
+import MoreTab from './MoreTab'
+
+const RACE_DATE = '2027-04-24'
 
 export default function MarathonApp({ initialTab = 'dashboard' }: { initialTab?: TabId }) {
   const [activeTab, setActiveTab] = useState<TabId>(initialTab)
@@ -51,17 +52,11 @@ export default function MarathonApp({ initialTab = 'dashboard' }: { initialTab?:
   function renderTab() {
     switch (activeTab) {
       case 'dashboard':
-        return <DashboardTab refreshKey={refreshKey} />
+        return <DashboardTab refreshKey={refreshKey} onOpenTab={setActiveTab} />
       case 'schedule':
         return <ScheduleTab refreshKey={refreshKey} />
-      case 'base':
-        return <PhaseSummaryTab phase={TRAINING_PLAN.base} />
-      case 'development':
-        return <PhaseSummaryTab phase={TRAINING_PLAN.development} />
-      case 'peak':
-        return <PhaseSummaryTab phase={TRAINING_PLAN.peak} />
-      case 'taper':
-        return <PhaseSummaryTab phase={TRAINING_PLAN.taper} />
+      case 'more':
+        return <MoreTab onSelect={setActiveTab} lastSync={lastSync} />
       case 'analytics':
         return <AnalyticsTab />
       case 'bodycomp':
@@ -85,6 +80,7 @@ export default function MarathonApp({ initialTab = 'dashboard' }: { initialTab?:
         onSync={handleSync}
         syncing={syncing}
         lastSync={lastSync}
+        daysToGo={Math.max(0, Math.ceil((new Date(RACE_DATE + 'T09:35:00').getTime() - Date.now()) / 86400000))}
       />
 
       {syncMessage && (
@@ -102,7 +98,7 @@ export default function MarathonApp({ initialTab = 'dashboard' }: { initialTab?:
         </div>
       )}
 
-      <main style={{ paddingTop: '8px' }}>{renderTab()}</main>
+      <main className="app-main">{renderTab()}</main>
     </div>
   )
 }

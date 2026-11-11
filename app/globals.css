@@ -31,3 +31,76 @@ html, body {
 ::-webkit-scrollbar-track { background: #0a0a0f; }
 ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+/* Phone-first chrome: slim header, tabs along the bottom within the safe area. */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #111118;
+  border-bottom: 1px solid #2a2a3a;
+  padding: 10px 16px;
+  padding-top: calc(10px + env(safe-area-inset-top));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-main {
+  padding-top: 8px;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+.tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  background: #111118;
+  border-top: 1px solid #2a2a3a;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tab-bar button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 10px 4px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab-bar button.active {
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.tab-bar .tab-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+@media (min-width: 700px) {
+  .tab-bar {
+    position: sticky;
+    top: 0;
+    bottom: auto;
+    border-top: none;
+    border-bottom: 1px solid #2a2a3a;
+    justify-content: center;
+    padding-bottom: 0;
+  }
+  .tab-bar button { flex: 0 0 120px; flex-direction: row; font-size: 11px; }
+  .app-main { padding-bottom: 24px; }
+}

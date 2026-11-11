@@ -2,6 +2,8 @@
 // (23 Oct 2026, Wed starch added 28 Oct, Chocomel 8 Nov, SiS pre-run drink 10 Nov).
 // Four fixed meals a day; porridge before runs; only dinner starch changes with the day type.
 
+import { TRAINING_PLAN } from './trainingData'
+
 export type DayType = 'gym' | 'easy' | 'rest' | 'steady' | 'long'
 export type DinnerProtein = 'lean' | 'oily' | 'bolognese'
 export type StarchType = 'rice' | 'pasta' | 'potato'
@@ -61,7 +63,14 @@ export const TYPES: Record<DayType, DayTypeDef> = {
   long:   { label: 'Long run',   target: M(2915, 380, 170, 75), maint: 3150, run: true,  starch: 350, starchType: 'pasta', protein: 'bolognese' },
 }
 export const TYPE_ORDER: DayType[] = ['rest', 'gym', 'easy', 'steady', 'long']
-const DOW_TYPE: DayType[] = ['long', 'gym', 'easy', 'rest', 'steady', 'gym', 'easy'] // Sun..Sat
+// Non-run days: Monday and Friday are gym days, anything else is rest.
+const DOW_NO_RUN: DayType[] = ['rest', 'gym', 'rest', 'rest', 'rest', 'gym', 'rest'] // Sun..Sat
+// Planned session type (lib/trainingData.ts) → fuel day type.
+const SESSION_TYPE: Record<string, DayType> = {
+  Easy: 'easy', Strides: 'easy', Fartlek: 'easy', Recovery: 'easy',
+  Long: 'long', Race: 'long',
+  Steady: 'steady', Intervals: 'steady', 'Marathon Pace': 'steady', Tempo: 'steady',
+}
 
 // Unwell / recovery day: +400 kcal, nearly all carbs, protein unchanged; dinner +100 g starch.
 export const BOOST = M(400, 90, 0, 5)
@@ -140,7 +149,23 @@ export const fromIso = (s: string): Date => { const [y, m, d] = s.split('-').map
 export const todayIso = (): string => toIso(new Date())
 export const shiftDays = (s: string, n: number): string => { const d = fromIso(s); d.setDate(d.getDate() + n); return toIso(d) }
 export const mondayOf = (s: string): string => { const d = fromIso(s); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return toIso(d) }
-export const defaultType = (s: string): DayType => DOW_TYPE[fromIso(s).getDay()]
+// Day type comes from the training plan, so a swapped Thursday or a moved long run
+// changes the fuel targets with it. Days with no planned run fall back to the weekday routine.
+export function planSessionFor(date: string) {
+  for (const phase of Object.values(TRAINING_PLAN)) {
+    if (date < phase.startDate || date > phase.endDate) continue
+    for (const wk of phase.weeks) {
+      const s = wk.sessions.find((x) => x.date === date)
+      if (s) return s
+    }
+  }
+  return null
+}
+export const defaultType = (s: string): DayType => {
+  const session = planSessionFor(s)
+  if (session) return SESSION_TYPE[session.type] ?? 'easy'
+  return DOW_NO_RUN[fromIso(s).getDay()]
+}
 export const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 export const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { TRAINING_PLAN } from '@/lib/trainingData'
 import { RunLog } from '@/lib/types'
 import SessionTile from './SessionTile'
+import PhaseSummaryTab from './PhaseSummaryTab'
 
 type PhaseKey = 'base' | 'development' | 'peak' | 'taper'
 
@@ -32,6 +33,7 @@ export default function ScheduleTab({ refreshKey }: { refreshKey?: number }) {
   const [selectedWeek, setSelectedWeek] = useState(defaultWeek)
   const [logs, setLogs] = useState<Record<string, RunLog>>({})
   const [loading, setLoading] = useState(false)
+  const [view, setView] = useState<'weeks' | 'overview'>('weeks')
 
   const phase = TRAINING_PLAN[selectedPhase]
   const week = phase.weeks[selectedWeek]
@@ -116,7 +118,37 @@ export default function ScheduleTab({ refreshKey }: { refreshKey?: number }) {
         ))}
       </div>
 
+      {/* Weeks / phase overview toggle */}
+      <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
+        {(['weeks', 'overview'] as const).map((v) => (
+          <button
+            key={v}
+            onClick={() => setView(v)}
+            style={{
+              background: view === v ? '#1a1a24' : 'transparent',
+              color: view === v ? '#e2e8f0' : '#64748b',
+              border: `1px solid ${view === v ? '#2a2a3a' : 'transparent'}`,
+              padding: '4px 10px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              fontSize: '10px',
+              letterSpacing: '0.5px',
+            }}
+          >
+            {v === 'weeks' ? 'WEEK BY WEEK' : 'PHASE OVERVIEW'}
+          </button>
+        ))}
+      </div>
+
+      {view === 'overview' && (
+        <div style={{ margin: '0 -16px' }}>
+          <PhaseSummaryTab phase={phase} />
+        </div>
+      )}
+
       {/* Week selector */}
+      {view === 'weeks' && (
       <div style={{ display: 'flex', gap: '4px', marginBottom: '20px', flexWrap: 'wrap' }}>
         {phase.weeks.map((wk, i) => {
           const wkLogs = wk.sessions.map((s) => logs[`runs:${selectedPhase}:${wk.weekNumber}:${s.day}`] ?? null)
@@ -145,7 +177,9 @@ export default function ScheduleTab({ refreshKey }: { refreshKey?: number }) {
           )
         })}
       </div>
+      )}
 
+      {view === 'weeks' && (<>
       {/* Week header */}
       <div
         style={{
@@ -206,6 +240,7 @@ export default function ScheduleTab({ refreshKey }: { refreshKey?: number }) {
           })}
         </div>
       )}
+      </>)}
     </div>
   )
 }
