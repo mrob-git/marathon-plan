@@ -133,6 +133,19 @@ export default function SessionTile({ session, log, onSave }: SessionTileProps) 
           {log?.feel && <Stat label="FELT" value={log.feel.toUpperCase()} color={log.feel === 'great' ? '#4ade80' : log.feel === 'rough' ? '#f87171' : '#60a5fa'} />}
         </div>
       )}
+      {hasLog && log?.strava && (
+        <div onClick={(e) => e.stopPropagation()} style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #1a2e1a' }}>
+          <div style={{ color: '#64748b', fontSize: '10px', display: 'flex', flexWrap: 'wrap', gap: '4px 12px' }}>
+            {log.strava.shoes && <span>{log.strava.shoes}</span>}
+            {log.strava.elevation !== undefined && <span>{log.strava.elevation} m up</span>}
+            {log.strava.tempC !== undefined && <span>{log.strava.tempC}°C{log.strava.weather ? `, ${log.strava.weather}` : ''}{log.strava.windKph ? `, wind ${log.strava.windKph} km/h` : ''}</span>}
+            {log.strava.hrDrift !== undefined && (
+              <span style={{ color: log.strava.hrDrift >= 8 ? '#fbbf24' : '#64748b' }}>HR drift {log.strava.hrDrift > 0 ? '+' : ''}{log.strava.hrDrift} bpm</span>
+            )}
+          </div>
+          {log.strava.splits.length > 0 && <Splits splits={log.strava.splits} sessionType={session.type} />}
+        </div>
+      )}
       {hasLog && log?.niggleNote && (
         <div style={{ color: '#fbbf24', fontSize: '11px', marginTop: '6px' }} onClick={(e) => e.stopPropagation()}>
           Niggle: {log.niggleNote}
@@ -260,6 +273,38 @@ export default function SessionTile({ session, log, onSave }: SessionTileProps) 
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+// HR ceiling for colouring splits: easy days 150, steady 156, quality 163.
+function capFor(type: string): number | null {
+  if (['Easy', 'Long', 'Strides', 'Fartlek', 'Recovery'].includes(type)) return 150
+  if (type === 'Steady') return 156
+  if (['Intervals', 'Marathon Pace', 'Tempo'].includes(type)) return 163
+  return null
+}
+
+const pace = (secs: number) => `${Math.floor(secs / 60)}:${String(Math.round(secs % 60)).padStart(2, '0')}`
+
+function Splits({ splits, sessionType }: { splits: { km: number; secs: number; hr?: number }[]; sessionType: string }) {
+  const cap = capFor(sessionType)
+  const fastest = Math.min(...splits.map((s) => s.secs))
+  const slowest = Math.max(...splits.map((s) => s.secs))
+  const range = Math.max(30, slowest - fastest)
+  return (
+    <div style={{ display: 'flex', gap: '3px', marginTop: '8px', alignItems: 'flex-end', height: '58px', overflowX: 'auto' }}>
+      {splits.map((s) => {
+        const h = 14 + ((slowest - s.secs) / range) * 26 // faster = taller
+        const over = cap !== null && s.hr !== undefined && s.hr > cap
+        return (
+          <div key={s.km} style={{ flex: '1 0 22px', minWidth: '22px', textAlign: 'center' }}>
+            <div style={{ color: over ? '#fbbf24' : '#64748b', fontSize: '8px', lineHeight: 1 }}>{s.hr ?? ''}</div>
+            <div style={{ height: `${h}px`, background: over ? '#fbbf2466' : '#60a5fa55', borderTop: `2px solid ${over ? '#fbbf24' : '#60a5fa'}`, borderRadius: '2px 2px 0 0', marginTop: '2px' }} />
+            <div style={{ color: '#94a3b8', fontSize: '8px', lineHeight: 1.2, marginTop: '2px' }}>{pace(s.secs)}</div>
+          </div>
+        )
+      })}
     </div>
   )
 }

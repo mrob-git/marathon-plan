@@ -1,6 +1,8 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getAllSessions } from '@/lib/trainingData'
-import { getRunLogByKey, saveRunLogByKey, getLastSyncTime, setLastSyncTime } from '@/lib/kv'
+import { getRunLogByKey, saveRunLogByKey, getLastSyncTime, setLastSyncTime, getAllRunLogs } from '@/lib/kv'
+import { stravaConfigured } from '@/lib/strava'
+import { fetchStravaDetail } from '@/lib/stravaDetail'
 import { RunLog } from '@/lib/types'
 
 const INTERVALS_MCP_URL = 'https://intervals-mcp.vercel.app/mcp'
@@ -149,8 +151,32 @@ function isoDaysAgo(iso: string, days: number): string {
   return d.toISOString().split('T')[0]
 }
 
-export async function POST(): Promise<NextResponse> {
+// Add Strava detail to a log that doesn't have it yet. Never fatal.
+async function enrich(key: string, log: RunLog): Promise<boolean> {
+  if (log.strava || !stravaConfigured()) return false
   try {
+    const detail = await fetchStravaDetail(log.date)
+    if (!detail) return false
+    await saveRunLogByKey(key, { ...log, strava: detail })
+    return true
+  } catch (e) {
+    console.log(`[sync] strava detail failed for ${key}:`, e instanceof Error ? e.message : e)
+    return false
+  }
+}
+
+// Vercel cron calls GET; the button calls POST. Same work.
+export async function GET(request: NextRequest): Promise<NextResponse> {
+  return runSync(request)
+}
+
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  return runSync(request)
+}
+
+async function runSync(request: NextRequest): Promise<NextResponse> {
+  try {
+    const backfill = new URL(request.url).searchParams.get('backfill') === '1'
     const lastSync = await getLastSyncTime()
 
     // First sync pulls the full history the tool allows; after that only
@@ -180,6 +206,7 @@ export async function POST(): Promise<NextResponse> {
     let added = 0
     let updated = 0
     let unchanged = 0
+    let enriched = 0
     const savedKeys: string[] = []
 
     for (const day of dailyTotals) {
@@ -237,6 +264,18 @@ export async function POST(): Promise<NextResponse> {
       savedKeys.push(key)
       if (existing) updated++
       else added++
+      if (await enrich(key, log)) enriched++
+    }
+
+    // One-off catch-up for logs that predate Strava detail (newest first, bounded).
+    if (backfill && stravaConfigured()) {
+      const phaseId = getPhaseForDate(new Date().toISOString().split('T')[0]) ?? 'development'
+      const all = await getAllRunLogs(phaseId)
+      const missing = Object.entries(all)
+        .filter(([, l]) => l?.actualTime && !l.strava)
+        .sort((a, b) => b[1].date.localeCompare(a[1].date))
+        .slice(0, 20)
+      for (const [key, l] of missing) if (await enrich(key, l)) enriched++
     }
 
     await setLastSyncTime(new Date().toISOString())
@@ -249,11 +288,13 @@ export async function POST(): Promise<NextResponse> {
     if (updated) parts.push(`${updated} updated`)
     if (!added && !updated) parts.push('Nothing new since last sync')
     if (unchanged) parts.push(`${unchanged} already up to date`)
+    if (enriched) parts.push(`Strava detail on ${enriched}`)
 
     return NextResponse.json({
       synced: runs.length,
       matched,
       savedKeys,
+      enriched,
       message: parts.join(', '),
     })
   } catch (err) {
