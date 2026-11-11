@@ -8,6 +8,10 @@ export interface RunLog {
   gapPerKm?: string // mm:ss
   trainingLoad?: number
   notes?: string
+  // Post-run check-in (Today screen): effort 1-10, how it felt, anything that twinged.
+  rpe?: number
+  feel?: 'great' | 'ok' | 'rough'
+  niggleNote?: string
 }
 
 export interface BodyCompEntry {
@@ -59,7 +63,22 @@ export type TabId =
   | 'paces'
   | 'injury'
 
+// Legacy one-line status (PR #5); migrated into the log on first read.
 export interface NiggleStatus {
-  text: string // one line, e.g. "Left Achilles 2/10 on stairs"
-  date: string // YYYY-MM-DD it was last updated
+  text: string
+  date: string
+}
+
+export type NiggleSite =
+  | 'achilles' | 'calf' | 'peroneal' | 'knee' | 'hamstring' | 'hip' | 'shin' | 'foot' | 'other'
+
+export interface NiggleEntry {
+  id: string
+  date: string // YYYY-MM-DD first noticed / logged
+  site: NiggleSite
+  side?: 'L' | 'R' | ''
+  severity: number // 0-10
+  note?: string
+  resolvedDate?: string // YYYY-MM-DD, set when it's gone
+  updatedAt: number
 }

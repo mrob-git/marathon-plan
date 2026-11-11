@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { TRAINING_PLAN } from '@/lib/trainingData'
-import { TabId, NiggleStatus, TrainingSession } from '@/lib/types'
+import { TabId, NiggleEntry, RunLog, TrainingSession } from '@/lib/types'
+import NigglesCard from './NiggleLog'
+import CheckInCard, { PendingRun } from './CheckInCard'
 import { NutritionDay, TYPES, normaliseDay, targetFor, eaten, todayIso } from '@/lib/nutrition'
 
 const RACE_DATE = '2027-04-24'
@@ -146,7 +148,8 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [fuel, setFuel] = useState<NutritionDay | null>(null)
-  const [niggle, setNiggle] = useState<NiggleStatus | null>(null)
+  const [niggles, setNiggles] = useState<NiggleEntry[] | null>(null)
+  const [logs, setLogs] = useState<Record<string, RunLog>>({})
 
   const todayStr = todayIso()
 
@@ -168,9 +171,15 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
       .catch(() => setFuel(normaliseDay(todayStr)))
 
     fetch('/api/niggles', { cache: 'no-store' })
-      .then(r => (r.ok ? r.json() : { text: '', date: '' }))
-      .then((data: NiggleStatus) => setNiggle(data))
-      .catch(() => setNiggle({ text: '', date: '' }))
+      .then(r => (r.ok ? r.json() : []))
+      .then((data: NiggleEntry[]) => setNiggles(Array.isArray(data) ? data : []))
+      .catch(() => setNiggles([]))
+
+    const { phaseId: currentPhase } = getCurrentPhaseAndWeek()
+    fetch(`/api/runs?phase=${currentPhase}`, { cache: 'no-store' })
+      .then(r => (r.ok ? r.json() : {}))
+      .then((data: Record<string, RunLog>) => setLogs(data ?? {}))
+      .catch(() => setLogs({}))
   }, [refreshKey, todayStr])
 
   const today = trends.length > 0 ? trends[0] : null
@@ -181,6 +190,20 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
   const todaySession = week?.sessions.find(s => s.date === todayStr)
   const advice = todayAdvice(readiness.call, readiness.signals, todaySession, today)
   const adviceColor = readiness.call === 'NO DATA' ? '#64748b' : !todaySession ? '#94a3b8' : readiness.color
+
+  // Latest synced run from the last three days that hasn't had its check-in yet.
+  const pendingRun: PendingRun | null = (() => {
+    const cutoff = new Date(Date.now() - 3 * 86400000).toISOString().split('T')[0]
+    let best: PendingRun | null = null
+    for (const [key, log] of Object.entries(logs)) {
+      if (!log?.actualTime || log.rpe || log.date < cutoff || log.date > todayStr) continue
+      const [, phaseId, weekNum, day] = key.split(':')
+      const session = TRAINING_PLAN[phaseId as PhaseKey]?.weeks.find(w => w.weekNumber === Number(weekNum))?.sessions.find(x => x.day === day)
+      const candidate = { key, phaseId, weekNum: Number(weekNum), day, log, description: session?.description ?? `${day} run` }
+      if (!best || log.date > best.log.date) best = candidate
+    }
+    return best
+  })()
 
   // Deduplicate runs by date (keep the main activity — highest training load)
   const runsByDate = new Map<string, RecentRun>()
@@ -240,6 +263,14 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
               </div>
             )}
           </Card>
+
+          {/* Post-run check-in, until it's done */}
+          {pendingRun && (
+            <CheckInCard
+              run={pendingRun}
+              onSaved={(log) => setLogs((prev) => ({ ...prev, [pendingRun.key]: log }))}
+            />
+          )}
 
           {/* Fuel today */}
           {fuel && <FuelCard day={fuel} onOpen={() => onOpenTab?.('nutrition')} />}
@@ -366,7 +397,7 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
 
           {/* Niggles */}
           <div style={{ marginTop: '12px' }}>
-            <NigglesCard status={niggle} onSaved={setNiggle} />
+            <NigglesCard log={niggles} onChange={setNiggles} />
           </div>
         </>
       )}
@@ -424,84 +455,6 @@ function FuelCard({ day, onOpen }: { day: NutritionDay; onOpen: () => void }) {
         <div style={{ width: `${pct}%`, height: '100%', background: left < 0 ? '#f87171' : '#4ade80', borderRadius: '3px' }} />
       </div>
     </div>
-  )
-}
-
-function NigglesCard({ status, onSaved }: { status: NiggleStatus | null; onSaved: (s: NiggleStatus) => void }) {
-  const [editing, setEditing] = useState(false)
-  const [text, setText] = useState('')
-  const [saving, setSaving] = useState(false)
-  const clear = !status?.text
-
-  async function save() {
-    setSaving(true)
-    try {
-      const res = await fetch('/api/niggles', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
-      })
-      if (res.ok) {
-        const data = await res.json()
-        onSaved({ text: data.text, date: data.date })
-        setEditing(false)
-      }
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  return (
-    <Card>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <div style={{ color: '#64748b', fontSize: '10px', letterSpacing: '1px' }}>NIGGLES</div>
-        <div style={{
-          background: clear ? '#0f2a1a' : '#2a1f0a',
-          color: clear ? '#4ade80' : '#fbbf24',
-          fontSize: '10px',
-          padding: '2px 8px',
-          borderRadius: '10px',
-          fontWeight: 'bold',
-        }}>
-          {clear ? 'ALL CLEAR' : 'WATCHING'}
-        </div>
-        {!editing && (
-          <button
-            onClick={() => { setText(status?.text ?? ''); setEditing(true) }}
-            style={{ marginLeft: 'auto', background: 'transparent', border: '1px solid #2a2a3a', color: '#94a3b8', borderRadius: '4px', padding: '3px 8px', fontFamily: 'inherit', fontSize: '10px', cursor: 'pointer' }}
-          >
-            {clear ? 'ADD' : 'EDIT'}
-          </button>
-        )}
-      </div>
-      {!editing && (
-        <div style={{ color: clear ? '#64748b' : '#e2e8f0', fontSize: '11px', marginTop: '6px', lineHeight: 1.5 }}>
-          {clear
-            ? 'Nothing logged. Add anything that twinges so the weekly review sees it.'
-            : <>{status?.text} <span style={{ color: '#64748b' }}>· updated {new Date(status!.date + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span></>}
-        </div>
-      )}
-      {editing && (
-        <div style={{ marginTop: '8px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-          <input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="e.g. Left Achilles 2/10 on stairs, fine running"
-            autoFocus
-            style={{ flex: '1 1 200px', background: '#0a0a0f', border: '1px solid #2a2a3a', borderRadius: '4px', padding: '6px 8px', color: '#e2e8f0', fontSize: '12px', fontFamily: 'inherit', outline: 'none' }}
-          />
-          <button onClick={save} disabled={saving} style={{ background: '#4ade80', color: '#0a0a0f', border: 'none', borderRadius: '4px', padding: '6px 12px', fontFamily: 'inherit', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer' }}>
-            {saving ? '…' : 'SAVE'}
-          </button>
-          <button onClick={() => { setText(''); save() }} disabled={saving} style={{ background: 'transparent', color: '#94a3b8', border: '1px solid #2a2a3a', borderRadius: '4px', padding: '6px 10px', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer' }}>
-            CLEAR
-          </button>
-          <button onClick={() => setEditing(false)} style={{ background: 'transparent', color: '#64748b', border: 'none', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer' }}>
-            cancel
-          </button>
-        </div>
-      )}
-    </Card>
   )
 }
 

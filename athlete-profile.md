@@ -40,10 +40,15 @@ Development (started 8 Sep 2026, 12 weeks). Currently in Week 3 — race week ta
 - Easy run avg pace: 6:30–6:50/km
 
 ## Current niggles
-- None active (as of 5 Oct 2026). Hamstring (post-NSM reps), calf (race week), and peroneal (carbon shoes at Vitality) all resolved.
+- Live log in the app (Today screen and Injury tab; `GET /api/niggles`). Check it before prescribing anything.
+- Last known: none active since 25 Oct 2026.
 
 ## Injury history
 - Knee issue during Base W3 (May 2026)
+- Hamstring (post-NSM reps) and calf (race week), Sep 2026, resolved by 5 Oct
+- Peroneal at Vitality 10K (27 Sep 2026): a mechanics change, not the carbon shoes; resolved by 5 Oct
+- Achilles/soleus 23–24 Oct 2026 after gym calf isometrics and backwards farmer's carries; long run skipped, clean from 25 Oct
+- Pattern: every niggle followed an intensity change or new gym load on top of fatigue, never steady volume
 
 ## Training structure
 - Base: 18 weeks from 5 May 2026 (Tue/Thu/Sat/Sun, Wed added from W8)

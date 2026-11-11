@@ -1,22 +1,83 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { NiggleEntry } from '@/lib/types'
+import NigglesCard from './NiggleLog'
+
+// Mike's own history, oldest first. Live entries come from the niggle log below.
+const HISTORY = [
+  { when: 'May 2026', what: 'Knee, Base W3', note: 'Settled after a down week; Thursday skipped, Saturday short test run.' },
+  { when: 'Sep 2026', what: 'Hamstring', note: 'After the NSM reps. Resolved by 5 Oct.' },
+  { when: 'Sep 2026', what: 'Calf', note: 'Race week before Vitality 10K. Resolved by 5 Oct.' },
+  { when: '27 Sep 2026', what: 'Peroneal', note: 'A mechanics change at Vitality (not the carbon shoes). Resolved by 5 Oct.' },
+  { when: '23–24 Oct 2026', what: 'Achilles / soleus', note: 'Felt walking the dog, aggravated by isometric calf raises and backwards farmer\'s carries at the gym. Long run skipped, test run clean 25 Oct, symptom-free since.' },
+]
+
 export default function InjuryTab() {
-  const protocols = [
+  const [log, setLog] = useState<NiggleEntry[] | null>(null)
+  const [showOthers, setShowOthers] = useState(false)
+
+  useEffect(() => {
+    fetch('/api/niggles', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d: NiggleEntry[]) => setLog(Array.isArray(d) ? d : []))
+      .catch(() => setLog([]))
+  }, [])
+
+  // The three that have actually happened to Mike come first.
+  const mine = [
     {
-      condition: 'IT Band Syndrome',
-      symptoms: 'Sharp lateral knee pain, worse on downhills. Often starts after week-on-week mileage jumps.',
+      condition: 'Achilles / soleus (Oct 2026)',
+      symptoms: 'Achilles: pinch-tender 2–6 cm above the heel, stiff first steps in the morning. Soleus: deep lower-calf ache, worse with the knee bent. Both flare after calf loading at the gym more than after runs.',
       acute: [
-        'Stop run if pain > 3/10. Walk home.',
-        'Ice 15 min, 3× daily for 48 hours.',
-        'Rest 3–5 days from running.',
+        'Pain over 3/10 or a change in gait: stop, walk home, skip the next run and do not make it up.',
+        'No calf isometrics, heavy raises or backwards farmer\'s carries at the gym until symptom-free for a week.',
+        'No stretching into pain. Bike if pain-free.',
+        'Test before returning: first steps, stairs, 10 single-leg heel raises (straight and bent knee), 10 hops. Under 2/10 and not worse after: 30–40 min easy, flat, Megablast.',
       ],
       rehab: [
-        'Foam roll lateral quad, TFL — 60s each side, daily.',
-        'Clamshells 3×15 each side.',
-        'Side-lying hip abduction 3×15.',
-        'Single-leg squat with control — check knee tracking.',
-        'Gradual return: start on flat, no back-to-back days.',
+        'Double-leg bodyweight heel raises first, then single-leg, 3×15 straight-knee and 3×15 bent-knee (soleus), every other day.',
+        'Add load slowly over 2–3 weeks; morning stiffness the next day is the signal to hold the load, not add to it.',
+        'Hills and speed come back last, after two clean easy weeks.',
+        'Keep the Running Revamp daily routine; it is the calf-foot work that prevents this.',
       ],
-      flag: 'Pain persists beyond 7 days rest → physio referral.',
+      flag: 'Sudden sharp or "kicked" feeling, swelling or a lump on the tendon, or cannot do one single-leg heel raise → physio within 48 h.',
     },
+    {
+      condition: 'Peroneal tendon (Sep 2026)',
+      symptoms: 'Ache or burning behind and below the outer ankle bone, sometimes up the outside of the lower leg. Worse on cambered roads and uneven ground. Yours came from a mechanics change, not the shoes.',
+      acute: [
+        'Drop intensity to easy for 3–5 days and stay on flat, even surfaces (no camber, no trail).',
+        'Ice 10–15 min after runs for the first 48 h if it is sore.',
+        'Check what changed: new shoes, a drill or cue that altered your foot strike, a sudden increase in strides.',
+      ],
+      rehab: [
+        'Resisted eversion with a band, 3×15 each side, daily.',
+        'Single-leg balance 3×30 s, eyes open then closed.',
+        'Calf raises with the weight through the big toe, 3×15.',
+        'Return to normal roads before any quality work.',
+      ],
+      flag: 'Ankle gives way, snapping over the ankle bone, or no better after 2 weeks of easy running → physio.',
+    },
+    {
+      condition: 'Knee (Base W3, May 2026)',
+      symptoms: 'Lateral knee pain, worse on downhills and after a jump in load. Your pattern: it came with the first volume step-up of the block.',
+      acute: [
+        'Stop the run if pain goes over 3/10. Walk home.',
+        'Skip the next quality session; keep easy runs if pain-free.',
+        'Take the down week early rather than late.',
+      ],
+      rehab: [
+        'Clamshells 3×15 and side-lying hip abduction 3×15, daily.',
+        'Single-leg squat with control; watch the knee tracking over the second toe.',
+        'Foam roll lateral quad and TFL, 60 s each side.',
+        'Return on the flat, no back-to-back run days for the first week.',
+      ],
+      flag: 'Pain persists beyond 7 days of easy running → physio referral.',
+    },
+  ]
+
+  const others = [
     {
       condition: 'Plantar Fasciitis',
       symptoms: 'Sharp heel pain on first steps in morning. May ease during run then return after.',
@@ -97,8 +158,32 @@ export default function InjuryTab() {
     'Always warm up properly for intervals and marathon pace sessions.',
   ]
 
+  const protocols = showOthers ? [...mine, ...others] : mine
+
   return (
     <div style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
+      {/* Live log */}
+      <div style={{ marginBottom: '12px' }}>
+        <NigglesCard log={log} onChange={setLog} compact={false} />
+      </div>
+
+      {/* History */}
+      <div style={{ background: '#111118', border: '1px solid #2a2a3a', borderRadius: '6px', padding: '16px', marginBottom: '24px' }}>
+        <div style={{ color: '#64748b', fontSize: '10px', letterSpacing: '1px', marginBottom: '8px' }}>YOUR HISTORY</div>
+        <div style={{ color: '#94a3b8', fontSize: '11px', marginBottom: '10px', lineHeight: 1.5 }}>
+          Every niggle so far has followed a change in intensity or a new gym load on top of fatigue, never steady volume. That is what the readiness call and the Dev 11 gate watch for.
+        </div>
+        {HISTORY.map((h, i) => (
+          <div key={i} style={{ display: 'flex', gap: '10px', padding: '6px 0', borderTop: i ? '1px solid #1a1a24' : 'none' }}>
+            <div style={{ color: '#64748b', fontSize: '10px', width: '92px', flexShrink: 0, paddingTop: '2px' }}>{h.when}</div>
+            <div>
+              <div style={{ color: '#e2e8f0', fontSize: '12px' }}>{h.what}</div>
+              <div style={{ color: '#64748b', fontSize: '11px', lineHeight: 1.4 }}>{h.note}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* General rules */}
       <div
         style={{
@@ -122,6 +207,7 @@ export default function InjuryTab() {
       </div>
 
       {/* Protocol cards */}
+      <div style={{ color: '#64748b', fontSize: '10px', letterSpacing: '1px', marginBottom: '8px' }}>PROTOCOLS FOR YOUR INJURIES</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {protocols.map((p) => (
           <div
@@ -147,12 +233,12 @@ export default function InjuryTab() {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '0',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: '12px',
                 padding: '12px 16px',
               }}
             >
-              <div style={{ borderRight: '1px solid #2a2a3a', paddingRight: '16px' }}>
+              <div>
                 <div style={{ color: '#f87171', fontSize: '10px', letterSpacing: '0.5px', marginBottom: '6px' }}>
                   ACUTE MANAGEMENT
                 </div>
@@ -162,7 +248,7 @@ export default function InjuryTab() {
                   ))}
                 </ul>
               </div>
-              <div style={{ paddingLeft: '16px' }}>
+              <div>
                 <div style={{ color: '#4ade80', fontSize: '10px', letterSpacing: '0.5px', marginBottom: '6px' }}>
                   REHAB EXERCISES
                 </div>
@@ -187,6 +273,13 @@ export default function InjuryTab() {
           </div>
         ))}
       </div>
+
+      <button
+        onClick={() => setShowOthers((v) => !v)}
+        style={{ marginTop: '16px', background: 'transparent', border: '1px solid #2a2a3a', color: '#94a3b8', borderRadius: '4px', padding: '6px 12px', fontFamily: 'inherit', fontSize: '10px', letterSpacing: '0.5px', cursor: 'pointer' }}
+      >
+        {showOthers ? 'HIDE OTHER PROTOCOLS' : 'SHOW OTHER PROTOCOLS (PLANTAR, SHINS, HAMSTRING, FATIGUE)'}
+      </button>
     </div>
   )
 }
