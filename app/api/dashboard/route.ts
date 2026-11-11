@@ -16,6 +16,9 @@ async function callMCP(toolName: string, args: Record<string, unknown>) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
+    // A POST fetch inside a GET route handler is cached by the Next.js data cache,
+    // which left the dashboard showing runs and wellness from days ago.
+    cache: 'no-store',
     signal: AbortSignal.timeout(15000),
   })
 

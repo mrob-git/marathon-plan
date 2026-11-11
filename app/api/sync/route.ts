@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAllSessions } from '@/lib/trainingData'
-import { saveRunLogByKey, setLastSyncTime } from '@/lib/kv'
+import { getRunLogByKey, saveRunLogByKey, getLastSyncTime, setLastSyncTime } from '@/lib/kv'
 import { RunLog } from '@/lib/types'
 
 const INTERVALS_MCP_URL = 'https://intervals-mcp.vercel.app/mcp'
@@ -39,6 +39,7 @@ async function callIntervalsMCP(limit: number): Promise<IntervalsRun[]> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
+    cache: 'no-store',
     signal: AbortSignal.timeout(15000),
   })
 
@@ -139,12 +140,34 @@ function groupByDate(runs: IntervalsRun[]): DailyTotal[] {
   return Array.from(byDate.values())
 }
 
+// Runs uploaded after the last sync, plus a few days' grace for late Garmin uploads.
+const GRACE_DAYS = 3
+
+function isoDaysAgo(iso: string, days: number): string {
+  const d = new Date(iso)
+  d.setUTCDate(d.getUTCDate() - days)
+  return d.toISOString().split('T')[0]
+}
+
 export async function POST(): Promise<NextResponse> {
   try {
-    // Fetch up to 50 recent runs (max the tool allows)
-    const runs = await callIntervalsMCP(50)
+    const lastSync = await getLastSyncTime()
 
-    console.log(`[sync] Fetched ${runs.length} runs total`)
+    // First sync pulls the full history the tool allows; after that only
+    // enough runs to cover the days since the last sync (about one run a day
+    // at most, plus a margin), so a daily sync fetches a handful, not 40+.
+    let limit = 50
+    let sinceDate: string | null = null
+    if (lastSync) {
+      const daysSince = Math.ceil((Date.now() - new Date(lastSync).getTime()) / 86400000)
+      limit = Math.min(50, Math.max(5, daysSince + GRACE_DAYS + 2))
+      sinceDate = isoDaysAgo(lastSync, GRACE_DAYS)
+    }
+
+    const fetched = await callIntervalsMCP(limit)
+    const runs = sinceDate ? fetched.filter((r) => r.date >= sinceDate) : fetched
+
+    console.log(`[sync] lastSync=${lastSync ?? 'never'} limit=${limit} fetched=${fetched.length} since=${sinceDate ?? 'all'} candidates=${runs.length}`)
 
     // Group by date — handles split activities (e.g. battery restart)
     const dailyTotals = groupByDate(runs)
@@ -154,7 +177,9 @@ export async function POST(): Promise<NextResponse> {
     }
 
     const sessions = getAllSessions()
-    let matched = 0
+    let added = 0
+    let updated = 0
+    let unchanged = 0
     const savedKeys: string[] = []
 
     for (const day of dailyTotals) {
@@ -177,6 +202,7 @@ export async function POST(): Promise<NextResponse> {
       if (!weekNum) continue
 
       const key = `runs:${phaseId}:${weekNum}:${s.day}`
+      const existing = await getRunLogByKey(key)
 
       const log: RunLog = {
         date: day.date,
@@ -186,23 +212,46 @@ export async function POST(): Promise<NextResponse> {
         avgHR,
         pacePerKm,
         trainingLoad: day.totalLoad > 0 ? day.totalLoad : undefined,
+        // Keep anything typed in by hand on the Schedule tab.
+        gapPerKm: existing?.gapPerKm,
+        notes: existing?.notes,
+      }
+
+      if (
+        existing &&
+        existing.date === log.date &&
+        existing.actualTime === log.actualTime &&
+        existing.distance === log.distance &&
+        existing.avgHR === log.avgHR &&
+        existing.trainingLoad === log.trainingLoad
+      ) {
+        unchanged++
+        continue
       }
 
       console.log(`[sync] Writing key=${key} date=${day.date} runs=${day.runCount} actualTime=${log.actualTime} distance=${log.distance} hr=${log.avgHR}`)
       await saveRunLogByKey(key, log)
       savedKeys.push(key)
-      matched++
+      if (existing) updated++
+      else added++
     }
 
     await setLastSyncTime(new Date().toISOString())
 
-    console.log(`[sync] Done. matched=${matched} keys=${savedKeys.join(', ')}`)
+    const matched = added + updated
+    console.log(`[sync] Done. added=${added} updated=${updated} unchanged=${unchanged} keys=${savedKeys.join(', ')}`)
+
+    const parts: string[] = []
+    if (added) parts.push(`${added} new run${added === 1 ? '' : 's'} logged`)
+    if (updated) parts.push(`${updated} updated`)
+    if (!added && !updated) parts.push('Nothing new since last sync')
+    if (unchanged) parts.push(`${unchanged} already up to date`)
 
     return NextResponse.json({
       synced: runs.length,
       matched,
       savedKeys,
-      message: `Fetched ${runs.length} runs across ${dailyTotals.length} days, matched ${matched} to planned sessions`,
+      message: parts.join(', '),
     })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'

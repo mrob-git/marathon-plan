@@ -30,6 +30,10 @@ export async function saveRunLogByKey(key: string, data: RunLog): Promise<void> 
   await kv.set(key, data)
 }
 
+export async function getRunLogByKey(key: string): Promise<RunLog | null> {
+  return kv.get<RunLog>(key)
+}
+
 // --- Body comp ---
 export async function getBodyCompEntries(): Promise<BodyCompEntry[]> {
   const entries = await kv.get<BodyCompEntry[]>('bodycomp:entries')
