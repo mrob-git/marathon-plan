@@ -52,12 +52,14 @@ export interface SyncResult {
 export type TabId =
   | 'dashboard'
   | 'schedule'
-  | 'base'
-  | 'development'
-  | 'peak'
-  | 'taper'
-  | 'paces'
   | 'nutrition'
-  | 'injury'
-  | 'analytics'
   | 'bodycomp'
+  | 'more'
+  | 'analytics'
+  | 'paces'
+  | 'injury'
+
+export interface NiggleStatus {
+  text: string // one line, e.g. "Left Achilles 2/10 on stairs"
+  date: string // YYYY-MM-DD it was last updated
+}

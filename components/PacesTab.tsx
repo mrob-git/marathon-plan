@@ -39,7 +39,7 @@ export default function PacesTab() {
 
   const targetPaces = [
     { label: 'Marathon target (3:10)', pace: '4:30/km', hr: 'under 165 bpm', notes: 'A goal. Race effort and long-run finishes' },
-    { label: 'Half marathon tune-up', pace: '4:15–4:20/km', hr: '165–170 bpm', notes: 'Feb 2027 check on 3:10' },
+    { label: 'Half marathon tune-up', pace: '4:15–4:20/km', hr: '165–170 bpm', notes: 'Wilmslow, Sun 21 Mar 2027 (not entered yet)' },
     { label: 'Sub-threshold reps', pace: '4:45–4:55/km', hr: '157–163 bpm', notes: 'Thursday quality' },
     { label: 'Steady run', pace: '5:30–5:50/km', hr: '148–155 bpm', notes: 'Never over LT1' },
     { label: 'Long run (easy part)', pace: '6:00–6:30/km', hr: 'under 150 bpm', notes: 'Easy zone' },

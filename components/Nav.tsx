@@ -2,19 +2,16 @@
 
 import { TabId } from '@/lib/types'
 
-const TABS: { id: TabId; label: string }[] = [
-  { id: 'dashboard', label: 'Dashboard' },
-  { id: 'schedule', label: 'Schedule' },
-  { id: 'base', label: 'Base' },
-  { id: 'development', label: 'Development' },
-  { id: 'peak', label: 'Peak' },
-  { id: 'taper', label: 'Taper' },
-  { id: 'analytics', label: 'Analytics' },
-  { id: 'bodycomp', label: 'Body Comp' },
-  { id: 'paces', label: 'Paces' },
-  { id: 'nutrition', label: 'Nutrition' },
-  { id: 'injury', label: 'Injury' },
+const TABS: { id: TabId; label: string; icon: JSX.Element }[] = [
+  { id: 'dashboard', label: 'TODAY', icon: <Icon d="M4 10 12 3l8 7v10a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z" /> },
+  { id: 'schedule', label: 'PLAN', icon: <Icon d="M4 5h16v15H4zM4 10h16M8 3v4M16 3v4" /> },
+  { id: 'nutrition', label: 'FUEL', icon: <Icon d="M7 4h10l-1 16H8zM6 9h12" /> },
+  { id: 'bodycomp', label: 'BODY', icon: <Icon d="M5 7h14v10H5zM12 7v10M8 12h8" /> },
+  { id: 'more', label: 'MORE', icon: <Icon d="M5 12h.01M12 12h.01M19 12h.01" /> },
 ]
+
+// Tabs that live under MORE keep MORE highlighted.
+const UNDER_MORE: TabId[] = ['more', 'analytics', 'paces', 'injury']
 
 interface NavProps {
   active: TabId
@@ -22,76 +19,60 @@ interface NavProps {
   onSync: () => void
   syncing: boolean
   lastSync: string | null
+  daysToGo: number
 }
 
-export default function Nav({ active, onSelect, onSync, syncing, lastSync }: NavProps) {
+export default function Nav({ active, onSelect, onSync, syncing, lastSync, daysToGo }: NavProps) {
   return (
-    <nav
-      style={{
-        background: '#111118',
-        borderBottom: '1px solid #2a2a3a',
-        padding: '0 16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '4px',
-        flexWrap: 'wrap',
-        minHeight: '48px',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', marginRight: '16px' }}>
-        <span style={{ color: '#4ade80', fontWeight: 'bold', fontSize: '13px', letterSpacing: '1px' }}>
-          LDN 2027
-        </span>
-        <span style={{ color: '#64748b', fontSize: '11px', marginLeft: '8px' }}>3:10:00</span>
-      </div>
+    <>
+      <header className="app-header">
+        <span style={{ color: '#4ade80', fontWeight: 'bold', fontSize: '13px', letterSpacing: '1px' }}>LDN 2027</span>
+        <span style={{ color: '#64748b', fontSize: '11px' }}>3:10 · {daysToGo} days</span>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {lastSync && (
+            <span style={{ color: '#64748b', fontSize: '10px' }}>synced {formatRelative(lastSync)}</span>
+          )}
+          <button
+            onClick={onSync}
+            disabled={syncing}
+            style={{
+              background: syncing ? '#1a1a24' : '#4ade80',
+              color: syncing ? '#64748b' : '#0a0a0f',
+              border: 'none',
+              padding: '6px 14px',
+              cursor: syncing ? 'not-allowed' : 'pointer',
+              fontSize: '11px',
+              fontFamily: 'inherit',
+              fontWeight: 'bold',
+              borderRadius: '4px',
+              letterSpacing: '0.5px',
+            }}
+          >
+            {syncing ? 'SYNCING...' : 'SYNC'}
+          </button>
+        </div>
+      </header>
 
-      {TABS.map((tab) => (
-        <button
-          key={tab.id}
-          onClick={() => onSelect(tab.id)}
-          style={{
-            background: active === tab.id ? '#4ade80' : 'transparent',
-            color: active === tab.id ? '#0a0a0f' : '#94a3b8',
-            border: 'none',
-            padding: '6px 12px',
-            cursor: 'pointer',
-            fontSize: '11px',
-            letterSpacing: '0.5px',
-            fontFamily: 'inherit',
-            fontWeight: active === tab.id ? 'bold' : 'normal',
-            borderRadius: '4px',
-          }}
-        >
-          {tab.label.toUpperCase()}
-        </button>
-      ))}
+      <nav className="tab-bar" aria-label="Main">
+        {TABS.map((tab) => {
+          const isActive = tab.id === 'more' ? UNDER_MORE.includes(active) : active === tab.id
+          return (
+            <button key={tab.id} className={isActive ? 'active' : undefined} onClick={() => onSelect(tab.id)}>
+              {tab.icon}
+              <span>{tab.label}</span>
+            </button>
+          )
+        })}
+      </nav>
+    </>
+  )
+}
 
-      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        {lastSync && (
-          <span style={{ color: '#64748b', fontSize: '10px' }}>
-            synced {formatRelative(lastSync)}
-          </span>
-        )}
-        <button
-          onClick={onSync}
-          disabled={syncing}
-          style={{
-            background: syncing ? '#1a1a24' : '#4ade80',
-            color: syncing ? '#64748b' : '#0a0a0f',
-            border: 'none',
-            padding: '6px 14px',
-            cursor: syncing ? 'not-allowed' : 'pointer',
-            fontSize: '11px',
-            fontFamily: 'inherit',
-            fontWeight: 'bold',
-            borderRadius: '4px',
-            letterSpacing: '0.5px',
-          }}
-        >
-          {syncing ? 'SYNCING...' : 'SYNC'}
-        </button>
-      </div>
-    </nav>
+function Icon({ d }: { d: string }) {
+  return (
+    <svg className="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={d} />
+    </svg>
   )
 }
 
