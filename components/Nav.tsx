@@ -6,6 +6,7 @@ const TABS: { id: TabId; label: string; icon: JSX.Element }[] = [
   { id: 'dashboard', label: 'TODAY', icon: <Icon d="M4 10 12 3l8 7v10a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z" /> },
   { id: 'schedule', label: 'PLAN', icon: <Icon d="M4 5h16v15H4zM4 10h16M8 3v4M16 3v4" /> },
   { id: 'nutrition', label: 'FUEL', icon: <Icon d="M7 4h10l-1 16H8zM6 9h12" /> },
+  { id: 'gym', label: 'GYM', icon: <Icon d="M3 10v4M6 8v8M18 8v8M21 10v4M6 12h12" /> },
   { id: 'bodycomp', label: 'BODY', icon: <Icon d="M5 7h14v10H5zM12 7v10M8 12h8" /> },
   { id: 'more', label: 'MORE', icon: <Icon d="M5 12h.01M12 12h.01M19 12h.01" /> },
 ]

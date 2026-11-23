@@ -104,3 +104,14 @@ html, body {
   .tab-bar button { flex: 0 0 120px; flex-direction: row; font-size: 11px; }
   .app-main { padding-bottom: 24px; }
 }
+
+/* Gym tab rest timer: floats above the bottom tab bar on phones. */
+.rest-timer {
+  position: fixed;
+  right: 16px;
+  bottom: calc(72px + env(safe-area-inset-bottom));
+  z-index: 15;
+}
+@media (min-width: 700px) {
+  .rest-timer { bottom: 24px; }
+}

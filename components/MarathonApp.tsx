@@ -6,6 +6,7 @@ import Nav from './Nav'
 import ScheduleTab from './ScheduleTab'
 import PacesTab from './PacesTab'
 import NutritionTab from './NutritionTab'
+import GymTab from './GymTab'
 import InjuryTab from './InjuryTab'
 import AnalyticsTab from './AnalyticsTab'
 import BodyCompTab from './BodyCompTab'
@@ -78,6 +79,8 @@ export default function MarathonApp({ initialTab = 'dashboard' }: { initialTab?:
         return <PacesTab />
       case 'nutrition':
         return <NutritionTab />
+      case 'gym':
+        return <GymTab />
       case 'injury':
         return <InjuryTab />
       default:

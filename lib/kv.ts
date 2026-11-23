@@ -2,6 +2,7 @@
 import { kv } from '@vercel/kv'
 import { RunLog, BodyCompEntry, NiggleStatus, NiggleEntry } from './types'
 import { NutritionDay } from './nutrition'
+import { GymLog } from './gym'
 
 // --- Run logs ---
 export async function getRunLog(phaseId: string, wk: number, day: string): Promise<RunLog | null> {
@@ -71,6 +72,27 @@ export async function getNutritionDays(from: string, to: string): Promise<Record
 
 export async function saveNutritionDay(day: NutritionDay): Promise<void> {
   await kv.set(`nutrition:${day.date}`, day)
+}
+
+// --- Gym log (one record per session date) ---
+export async function getGymLogs(from: string, to: string): Promise<Record<string, GymLog>> {
+  const keys = await kv.keys('gym:*')
+  const wanted = keys.filter((k) => {
+    const date = k.slice('gym:'.length)
+    return date >= from && date <= to
+  })
+  if (!wanted.length) return {}
+  const values = await kv.mget<GymLog[]>(...wanted)
+  const result: Record<string, GymLog> = {}
+  wanted.forEach((_, i) => {
+    const v = values[i]
+    if (v) result[v.date] = v
+  })
+  return result
+}
+
+export async function saveGymLog(log: GymLog): Promise<void> {
+  await kv.set(`gym:${log.date}`, log)
 }
 
 // --- Niggle status (one line, shown on the Today screen) ---

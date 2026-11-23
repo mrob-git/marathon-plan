@@ -72,6 +72,7 @@ export type TabId =
   | 'dashboard'
   | 'schedule'
   | 'nutrition'
+  | 'gym'
   | 'bodycomp'
   | 'more'
   | 'analytics'
