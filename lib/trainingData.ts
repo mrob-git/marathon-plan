@@ -356,12 +356,12 @@ function buildDevelopmentPhase(): TrainingWeek[] {
     },
     // Week 12
     {
-      note: 'Sub-threshold week 2. Development phase finale.',
+      note: 'Recovery week (agreed 16 Nov) with a 5K time trial on Saturday, ~3h15. The TT resets rep paces and the HR band for Peak. If anything niggles, the TT becomes 45 min easy.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
-        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 10 min WU + 6 x 3 min at 4:50-5:00/km (HR 157-163), 60 sec jog + 10 min CD', mins: 50 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 65 },
-        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150, 75 min cap', mins: 75 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 4 x 15 sec strides — HR under 150', mins: 45 },
+        { day: 'Thursday', type: 'Easy', desc: 'Easy aerobic run — HR under 150 (strides here if missed on Tuesday)', mins: 40 },
+        { day: 'Saturday', type: 'Race', desc: '5K time trial in carbons, chest strap — 15 min easy + 4 strides, 5K all out (first 3 km 4:15-4:18), 10 min easy', mins: 50 },
+        { day: 'Sunday', type: 'Easy', desc: 'Easy run — keep it truly easy, HR under 145', mins: 60 },
       ],
     },
   ]
@@ -393,7 +393,7 @@ function buildPeakPhase(): TrainingWeek[] {
     {
       note: 'Peak 1. Build block 1 of 4. Thursday reps carry on from Development; long run starts growing.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 55 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 55 },
         { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 6 x 4 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 54 },
         { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
         { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 85 },
@@ -403,7 +403,7 @@ function buildPeakPhase(): TrainingWeek[] {
     {
       note: 'Peak 2.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
+        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
         { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 5 x 5 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 54 },
         { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
         { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 95 },
@@ -411,7 +411,7 @@ function buildPeakPhase(): TrainingWeek[] {
     },
     // Week 3
     {
-      note: 'Peak 3. Strides added on Tuesday.',
+      note: 'Peak 3.',
       sessions: [
         { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 60 },
         { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 6 x 5 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 60 },
