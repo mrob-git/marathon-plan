@@ -13,6 +13,16 @@ const HISTORY = [
   { when: '23–24 Oct 2026', what: 'Achilles / soleus', note: 'Felt walking the dog, aggravated by isometric calf raises and backwards farmer\'s carries at the gym. Long run skipped, test run clean 25 Oct, symptom-free since.' },
 ]
 
+interface Protocol {
+  condition: string
+  symptoms: string
+  acute: string[]
+  rehab: string[]
+  flag: string
+  acuteLabel?: string
+  rehabLabel?: string
+}
+
 export default function InjuryTab() {
   const [log, setLog] = useState<NiggleEntry[] | null>(null)
   const [showOthers, setShowOthers] = useState(false)
@@ -24,8 +34,29 @@ export default function InjuryTab() {
       .catch(() => setLog([]))
   }, [])
 
-  // The three that have actually happened to Mike come first.
-  const mine = [
+  // The ones that have actually happened to Mike come first.
+  // acuteLabel / rehabLabel override the column headings for routine-style cards.
+  const mine: Protocol[] = [
+    {
+      condition: 'Hamstring, left (Sep 2026) · mobility and release routine',
+      symptoms: 'Flared after the NSM reps in September. Peak brings reps back every Thursday from 3 Dec, so this routine runs from Fri 27 Nov (added 26 Nov). Left leg first and a bit longer. No static hamstring stretching before runs.',
+      acuteLabel: 'BEFORE EVERY RUN · 3 MIN',
+      acute: [
+        'After the ankle pre-run block (backward walk, balance, hip hikes).',
+        'Front-to-back leg swings, hand on a wall: 10 each. Start small and let the range grow; stay tall.',
+        'Hamstring scoops: heel forward, toes up, knee soft, sweep both hands past the shin as you step through. 8 each.',
+        'Walking straight-leg kicks, opposite hand reaching: 8 each. Waist height at most, controlled, not a flick.',
+      ],
+      rehabLabel: 'EVENING ON RUN DAYS (TUE, THU, SAT, SUN) · ~7 MIN',
+      rehab: [
+        'Foam roller: 60–90 s each leg, other leg crossed on top. Slow strokes from just above the back of the knee to a hand\'s width below the sit bone. Leg turned in (inner), then out (outer). Pause 3 breaths on tender spots.',
+        'Massage ball pin-and-floss on a hard chair: 2 spots per leg, pressure 5–6/10. Hold 30 s until it eases, then straighten and bend the knee slowly 10 times over the ball.',
+        'Then the lying nerve floss (rope, 10 steps, 10 foot pumps, 10 wiggle-waggles). On run days it moves here; don\'t do it twice.',
+        'No ball work the morning of a Thursday session or TT. Never press on the sit bone or behind the knee. Bruised next day = too much pressure.',
+        'Strength: no Nordics for now (hex bar and hip swings load the hamstrings; calf raises are P1\'s one new load). Revisit at P4 (21 Dec).',
+      ],
+      flag: 'Pain high up near the sit bone (worse sitting on a hard chair), or tightness that builds during Thursday reps → stop the reps, jog easy home, log it here.',
+    },
     {
       condition: 'Achilles / soleus (Oct 2026)',
       symptoms: 'Achilles: pinch-tender 2–6 cm above the heel, stiff first steps in the morning. Soleus: deep lower-calf ache, worse with the knee bent. Both flare after calf loading at the gym more than after runs.',
@@ -158,7 +189,7 @@ export default function InjuryTab() {
     'Always warm up properly for intervals and marathon pace sessions.',
   ]
 
-  const protocols = showOthers ? [...mine, ...others] : mine
+  const protocols: Protocol[] = showOthers ? [...mine, ...others] : mine
 
   return (
     <div style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
@@ -240,7 +271,7 @@ export default function InjuryTab() {
             >
               <div>
                 <div style={{ color: '#f87171', fontSize: '10px', letterSpacing: '0.5px', marginBottom: '6px' }}>
-                  ACUTE MANAGEMENT
+                  {p.acuteLabel ?? 'ACUTE MANAGEMENT'}
                 </div>
                 <ul style={{ margin: 0, padding: '0 0 0 14px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {p.acute.map((a, i) => (
@@ -250,7 +281,7 @@ export default function InjuryTab() {
               </div>
               <div>
                 <div style={{ color: '#4ade80', fontSize: '10px', letterSpacing: '0.5px', marginBottom: '6px' }}>
-                  REHAB EXERCISES
+                  {p.rehabLabel ?? 'REHAB EXERCISES'}
                 </div>
                 <ul style={{ margin: 0, padding: '0 0 0 14px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {p.rehab.map((r, i) => (
@@ -278,7 +309,7 @@ export default function InjuryTab() {
         onClick={() => setShowOthers((v) => !v)}
         style={{ marginTop: '16px', background: 'transparent', border: '1px solid #2a2a3a', color: '#94a3b8', borderRadius: '4px', padding: '6px 12px', fontFamily: 'inherit', fontSize: '10px', letterSpacing: '0.5px', cursor: 'pointer' }}
       >
-        {showOthers ? 'HIDE OTHER PROTOCOLS' : 'SHOW OTHER PROTOCOLS (PLANTAR, SHINS, HAMSTRING, FATIGUE)'}
+        {showOthers ? 'HIDE OTHER PROTOCOLS' : 'SHOW OTHER PROTOCOLS (PLANTAR, SHINS, HAMSTRING STRAIN, FATIGUE)'}
       </button>
     </div>
   )
