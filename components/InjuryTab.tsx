@@ -53,7 +53,7 @@ export default function InjuryTab() {
       rehabLabel: 'EVENINGS + GYM',
       rehab: [
         'Every night: 5 min resonance breathing before bed.',
-        'Run days: hamstring routine, then neck block (3 min): ball on upper trap and levator against a wall, 30 s then turn the head away 5 times; ball on pec minor 30 s.',
+        'Run days: hamstring routine, then neck block (~5 min, pressure 4–5/10): two tennis balls in a sock under the base of the skull, 10 tiny chin nods + 5 small turns; ball on upper trap, hold 30 s then tilt the head away 5 times; ball on levator, look down to the opposite armpit 5 times; fingers above the collarbone, tilt away and look up 5 times (scalenes, stop if it tingles); ball on pec minor while reaching the arm up 5 times.',
         'Mon, Wed, Fri: neck block, thoracic extension over the roller (3 levels x 3 breaths), open books 8 each.',
         'Gym from 7 Dec: band face pull with external rotation 2 x 15, prone Y raise 2 x 10 with 3 s hold.',
         'Sliders should glide, never tingle. Stiffer next morning: drop the newest item for a week. No hard neck stretching.',
