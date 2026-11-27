@@ -47,7 +47,8 @@ export default function InjuryTab() {
         'Exhale and drop: shrug in, melt the shoulders on a long out-breath, 5 reps.',
         'Arm nerve slider (wrist back + head towards the arm) and slump slider (look up as the knee straightens): 10 left, 5 right.',
         'Lying nerve floss (evening on run days), sideline hip openers, foot protocol, rope foot fixer, toe yoga.',
-        'Through the day: hourly stand, 3 nasal breaths, shoulders down, look far away 20 s. Swap bag shoulder.',
+        'Sitting is the trigger: every 30–40 min a 90 s desk reset (3 nasal breaths, 5 hip swings each leg, 5 slump sliders, look far away 20 s). Sit on sit bones, hips above knees, screen at eye level, no left-over-right leg cross.',
+        'Sleep on your back (pillow under knees) or right side (pillow between knees, pillow fills ear-to-shoulder gap). Left arm below shoulder height.',
       ],
       rehabLabel: 'EVENINGS + GYM',
       rehab: [
