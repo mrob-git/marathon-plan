@@ -38,6 +38,28 @@ export default function InjuryTab() {
   // acuteLabel / rehabLabel override the column headings for routine-style cards.
   const mine: Protocol[] = [
     {
+      condition: 'Left-side neural tension · neck, traps, hip, hamstring, soleus',
+      symptoms: 'Comes and goes, always the left side. Treated as neural (dural) tension plus a guarding nervous system, not short muscles: calm it, make the nerves glide, then load. Phase 1 Calm 30 Nov-20 Dec, Phase 2 Glide 21 Dec-17 Jan (tensioners, hamstring isometrics, suitcase carry) if the 20 Dec retest passes, Phase 3 Hold from 18 Jan. Tests: Sun 29 Nov baseline, Sun 20 Dec, then each recovery week. Full plan: claude.ai/artifact/9XD9QHKBVb7zzgZGtK3sE1',
+      acuteLabel: 'EVERY MORNING · ~10 MIN (AFTER RESONANCE BREATHING)',
+      acute: [
+        'Breathing cues: tongue on palate, jaw soft, hand on left lower ribs; hum the exhale for the last 2 min.',
+        'Ball on head 1 min. Chin nods lying 5 x 10 s. Eye-led neck turns 5 each, left slower.',
+        'Exhale and drop: shrug in, melt the shoulders on a long out-breath, 5 reps.',
+        'Arm nerve slider (wrist back + head towards the arm) and slump slider (look up as the knee straightens): 10 left, 5 right.',
+        'Lying nerve floss (evening on run days), sideline hip openers, foot protocol, rope foot fixer, toe yoga.',
+        'Through the day: hourly stand, 3 nasal breaths, shoulders down, look far away 20 s. Swap bag shoulder.',
+      ],
+      rehabLabel: 'EVENINGS + GYM',
+      rehab: [
+        'Every night: 5 min resonance breathing before bed.',
+        'Run days: hamstring routine, then neck block (3 min): ball on upper trap and levator against a wall, 30 s then turn the head away 5 times; ball on pec minor 30 s.',
+        'Mon, Wed, Fri: neck block, thoracic extension over the roller (3 levels x 3 breaths), open books 8 each.',
+        'Gym from 7 Dec: band face pull with external rotation 2 x 15, prone Y raise 2 x 10 with 3 s hold.',
+        'Sliders should glide, never tingle. Stiffer next morning: drop the newest item for a week. No hard neck stretching.',
+      ],
+      flag: 'Pins and needles, numbness or weakness in an arm or leg, pain spreading below the knee or down the arm, night neck pain, or no change by the P8 retest → physio within a week (neurodynamic assessment).',
+    },
+    {
       condition: 'Hamstring, left (Sep 2026) · mobility and release routine',
       symptoms: 'Flared after the NSM reps in September. Peak brings reps back every Thursday from 3 Dec, so this routine runs from Fri 27 Nov (added 26 Nov). Left leg first and a bit longer. No static hamstring stretching before runs.',
       acuteLabel: 'BEFORE EVERY RUN · 3 MIN',
@@ -53,7 +75,7 @@ export default function InjuryTab() {
         'Massage ball pin-and-floss on a hard chair: 2 spots per leg, pressure 5–6/10. Hold 30 s until it eases, then straighten and bend the knee slowly 10 times over the ball.',
         'Then the lying nerve floss (rope, 10 steps, 10 foot pumps, 10 wiggle-waggles). On run days it moves here; don\'t do it twice.',
         'No ball work the morning of a Thursday session or TT. Never press on the sit bone or behind the knee. Bruised next day = too much pressure.',
-        'Strength: no Nordics for now (hex bar and hip swings load the hamstrings; calf raises are P1\'s one new load). Revisit at P4 (21 Dec).',
+        'Strength: single-leg bridge isometric, heel on a box, 3 x 30 s each, Mon gym from 28 Dec. No Nordics this cycle.',
       ],
       flag: 'Pain high up near the sit bone (worse sitting on a hard chair), or tightness that builds during Thursday reps → stop the reps, jog easy home, log it here.',
     },
