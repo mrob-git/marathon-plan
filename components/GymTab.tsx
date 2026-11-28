@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   GymSession, GymItem, GymLog, GymSet, GymLogSpec,
-  GYM_SESSIONS, sessionById, allItemIds, defaultSessionId,
+  sessionById, pickerSessions, allItemIds, defaultSessionId,
   COUNT_LABEL, setFilled, setLabel, bestSet, bestKg, previousSets, exerciseCatalogue,
 } from '@/lib/gym'
 import { exerciseInfo, ExerciseInfo } from '@/lib/gymExercises'
@@ -103,7 +103,7 @@ export default function GymTab() {
           {session ? (
             <SessionView session={session} log={store[session.date] ?? blankLog(session.date)} store={store} update={(fn) => update(session.date, fn)} />
           ) : (
-            <div style={{ color: C.muted, fontSize: '12px', padding: '32px 0', textAlign: 'center' }}>No gym sessions written yet.</div>
+            <div style={{ color: C.muted, fontSize: '12px', padding: '32px 0', textAlign: 'center' }}>No sessions written yet.</div>
           )}
         </>
       )}
@@ -119,7 +119,10 @@ export default function GymTab() {
 
 function SessionPicker({ selected, onSelect, store }: { selected?: string; onSelect: (id: string) => void; store: Store }) {
   const today = todayIso()
-  const sorted = [...GYM_SESSIONS].sort((a, b) => a.date.localeCompare(b.date))
+  const sorted = pickerSessions(today, Object.keys(store))
+  // The list is long once run days are in it, so bring the selected day into view.
+  const activeRef = useRef<HTMLButtonElement | null>(null)
+  useEffect(() => { activeRef.current?.scrollIntoView({ block: 'nearest', inline: 'center' }) }, [selected])
   return (
     <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px', marginBottom: '12px' }}>
       {sorted.map((s) => {
@@ -129,6 +132,7 @@ function SessionPicker({ selected, onSelect, store }: { selected?: string; onSel
         return (
           <button
             key={s.id}
+            ref={active ? activeRef : undefined}
             onClick={() => onSelect(s.id)}
             style={{
               flex: '0 0 auto', minWidth: '96px', textAlign: 'left', cursor: 'pointer', fontFamily: 'inherit',
@@ -139,6 +143,7 @@ function SessionPicker({ selected, onSelect, store }: { selected?: string; onSel
             <div style={{ color: active ? C.green : C.text, fontSize: '12px', fontWeight: 'bold' }}>
               {fmtShort(s.date)}{s.date === today ? ' · today' : ''}
             </div>
+            <div style={{ color: s.kind === 'run' ? C.dim : C.muted, fontSize: '9px', letterSpacing: '0.5px', marginTop: '2px' }}>{s.kind === 'run' ? 'RUN DAY' : 'GYM'}</div>
             <div style={{ color: done === total ? C.green : C.muted, fontSize: '10px', marginTop: '2px' }}>
               {done === 0 ? (s.date < today ? 'not logged' : `${total} items`) : done === total ? 'done ✓' : `${done}/${total} done`}
             </div>
@@ -201,7 +206,7 @@ function SessionView({ session, log, store, update }: {
           <div style={{ width: `${pct}%`, height: '100%', background: C.green, transition: 'width .25s' }} />
         </div>
         <div style={{ color: done === ids.length ? C.green : C.muted, fontSize: '10px', marginTop: '4px' }}>
-          {done} of {ids.length} done{done === ids.length && ids.length > 0 ? '. Good session.' : ''}
+          {done} of {ids.length} done{done === ids.length && ids.length > 0 ? (session.kind === 'run' ? '. All done for today.' : '. Good session.') : ''}
         </div>
       </div>
 
@@ -234,8 +239,8 @@ function SessionView({ session, log, store, update }: {
       )}
 
       <section style={{ ...card, padding: '12px 14px' }}>
-        <div style={{ color: C.text, fontSize: '13px', fontWeight: 'bold', marginBottom: '6px' }}>Stop rules</div>
-        <ul style={{ margin: 0, paddingLeft: '18px', color: C.dim, fontSize: '11px', lineHeight: 1.6 }}>
+        <div style={{ color: C.text, fontSize: '13px', fontWeight: 'bold', marginBottom: '6px' }}>{session.kind === 'run' ? 'Rules' : 'Stop rules'}</div>
+        <ul style={{ margin: 0, paddingLeft: '18px', color: C.dim, fontSize: '11px', lineHeight: 1.6, listStyleType: 'disc' }}>
           {session.rules.map((r) => <li key={r}>{r}</li>)}
         </ul>
       </section>
