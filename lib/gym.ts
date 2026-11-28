@@ -222,12 +222,13 @@ export const GYM_SESSIONS: GymSession[] = [
       {
         title: 'Left ankle prehab (new from P1)',
         minutes: '~10 min',
-        note: 'Left side first and a bit longer. Slow and controlled, nothing should burn.',
+        note: 'Left side first and a bit longer. Slow and controlled, nothing should burn. Foot work comes before the holds so the balance is done fresh.',
         items: [
           { id: 'tib-release', name: 'Tibialis anterior release', how: 'Ball or roller on the front of the shin, outside the bone', dose: '60 s each' },
-          { id: 'foot-doming', name: 'Foot doming + big toe press', how: 'Lift the arch without curling the toes, then press the big toe down', dose: '5 x 10 s each' },
+          { id: 'foot-doming', name: 'Foot doming', how: 'Lift the arch without curling the toes', dose: '5 x 10 s each' },
+          { id: 'big-toe-press', name: 'Big toe press', how: 'Big toe down, other four toes up. Left first, straight before the balance', dose: '5 x 5 s each' },
+          { id: 'sl-balance', name: 'Single-leg balance, eyes open', how: 'Base of the big toe heavy, toes soft. The rep ends when the toes grip. Left first. Eyes closed only once 3 x 20 s is clean', dose: '3 x 15-20 s each' },
           { ...ISOMETRIC_14(2), how: 'In the turn-and-step position, weight through the base of the big toe. Never below neutral. Left first' },
-          { id: 'sl-balance', name: 'Single-leg balance progression', how: 'Eyes open on flat ground, then eyes closed or head turns when 30 s is easy', dose: '3 x 30 s each' },
           BAND_EVERSION,
         ],
       },
