@@ -190,6 +190,54 @@ export const GYM_SESSIONS: GymSession[] = [
     ],
     next: 'Tomorrow: carbons and chest strap. 15 min easy with 4 strides, 5K all out (first km 4:15-4:18), 10 min easy.',
   },
+  {
+    id: '2026-11-30',
+    date: '2026-11-30',
+    eyebrow: 'Peak 1 · Build week 1',
+    title: 'Tier B + ankle prehab starts',
+    summary: 'Back to full Tier B with 3 working sets. The new left ankle prehab block starts today, and you do the heel raise test once. Sub-threshold reps are tomorrow, so keep 2 reps in reserve on the lifts.',
+    chips: [{ text: '~65 min' }, { text: 'Isometrics 14 kg' }, { text: 'Heel raise test today', warn: true }],
+    blocks: [
+      PREP,
+      {
+        title: 'Calf warm-up + heel raise test',
+        minutes: '~8 min',
+        note: 'Warm-up first, then the test. Put the counts in the notes box (L and R). Target: left at least 90% of right.',
+        items: [
+          ...CALF_WARMUP,
+          { id: 'test-heel-raise', name: 'Test: single-leg bent-knee heel raise to fatigue', how: '1 rep every 2 s, flat ground, fingertips on a wall. Stop when height drops or form goes. Left first, full rest before right', dose: 'L + R, 1 set' },
+        ],
+      },
+      {
+        title: 'Main lifts',
+        minutes: '~25 min',
+        note: 'Build week: 3 working sets, 2 reps in reserve. Breathe out on the way down.',
+        items: [
+          { id: 'hex-bar', name: 'Hex bar deadlift', how: '2 x 6 warm-up first. 3-4 s down, 3 min rest. Usual working weight', dose: '3 x 5-6', log: { sets: 3, count: 'reps', weighted: true } },
+          { id: 'hip-swings', name: 'Single-leg hip swings', how: 'Front foot on a 14-inch box. Springy; stop when the pop drops', dose: '3 x 8-10', log: { sets: 3, count: 'reps', weighted: true } },
+          { id: 'split-squats', name: 'Split squats', how: '3 s down, pause, drive up', dose: '3 x 6 each', log: { sets: 3, count: 'reps', weighted: true } },
+          { id: 'cossack', name: 'Cossack squats', how: 'Bodyweight or light kettlebell, only as deep as stays smooth', dose: '2 x 8 each', log: { sets: 2, count: 'reps', weighted: true } },
+        ],
+      },
+      { title: 'Upper body', minutes: '~8 min', items: [PUSH_UPS(3), ROWS(3)] },
+      {
+        title: 'Left ankle prehab (new from P1)',
+        minutes: '~10 min',
+        note: 'Left side first and a bit longer. Slow and controlled, nothing should burn.',
+        items: [
+          { id: 'tib-release', name: 'Tibialis anterior release', how: 'Ball or roller on the front of the shin, outside the bone', dose: '60 s each' },
+          { id: 'foot-doming', name: 'Foot doming + big toe press', how: 'Lift the arch without curling the toes, then press the big toe down', dose: '5 x 10 s each' },
+          { ...ISOMETRIC_14(2), how: 'In the turn-and-step position, weight through the base of the big toe. Never below neutral. Left first' },
+          { id: 'sl-balance', name: 'Single-leg balance progression', how: 'Eyes open on flat ground, then eyes closed or head turns when 30 s is easy', dose: '3 x 30 s each' },
+          BAND_EVERSION,
+        ],
+      },
+      { title: 'Finish', minutes: '~3 min', items: [CARRY] },
+    ],
+    leftOut: 'Bent-knee calf raises start Fri 4 Dec, not today, because the heel raise test is already a full set to fatigue. Isometrics stay at 14 kg until Mon 7 Dec.',
+    rules: STANDARD_RULES,
+    next: 'Tomorrow: sub-threshold, 15 min warm-up + 6 x 4 min at HR 157-163, 60 s jog, 10 min cool-down.',
+  },
 ]
 
 // --- Helpers ----------------------------------------------------------------

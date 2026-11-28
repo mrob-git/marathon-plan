@@ -391,7 +391,7 @@ function buildPeakPhase(): TrainingWeek[] {
   const weekTemplates = [
     // Week 1
     {
-      note: 'Peak 1. Build block 1 of 4. 5K time trial on Saturday (moved from 28 Nov for wind and rain), so the sub-threshold session moves to Tuesday this week (Mike, 28 Nov) and Thursday is easy. From Peak 2 reps go back to Thursday at TT-based paces. Friday gym: prehab and upper body only. No hamstring ball work the morning of the reps or the TT. If anything niggles, the TT becomes 50 min easy.',
+      note: 'Peak 1. Build block 1 of 4. 5K time trial on Saturday (moved from 28 Nov for wind and rain), so the sub-threshold session moves to Tuesday this week (Mike, 28 Nov) and Thursday is easy. From Peak 2 reps go back to Thursday at TT-based paces. No hamstring ball work the morning of the reps or the TT. If anything niggles, the TT becomes 50 min easy.',
       sessions: [
         { day: 'Tuesday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 6 x 4 min at HR 157-163 (~4:55-5:00/km, pace comes off HR), 60 sec jog + 10 min CD', mins: 54 },
         { day: 'Thursday', type: 'Easy', desc: 'Easy aerobic run + 4 x 20 sec strides (TT warm-up rehearsal) — HR under 150', mins: 45 },
