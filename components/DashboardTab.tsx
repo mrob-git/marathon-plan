@@ -6,7 +6,7 @@ import { TabId, NiggleEntry, RunLog, TrainingSession } from '@/lib/types'
 import NigglesCard from './NiggleLog'
 import CheckInCard, { PendingRun } from './CheckInCard'
 import { NutritionDay, TYPES, normaliseDay, targetFor, eaten, todayIso } from '@/lib/nutrition'
-import { GYM_SESSIONS } from '@/lib/gym'
+import { sessionById } from '@/lib/gym'
 
 const RACE_DATE = '2027-04-24'
 const RHR_BASELINE = [51, 54] // low, high
@@ -189,7 +189,7 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
   const phase = TRAINING_PLAN[phaseId]
   const week = phase.weeks[weekIdx]
   const todaySession = week?.sessions.find(s => s.date === todayStr)
-  const gymToday = GYM_SESSIONS.find(g => g.date === todayStr)
+  const gymToday = sessionById(todayStr) // a gym session, or the run-day routine
   const advice = todayAdvice(readiness.call, readiness.signals, todaySession, today)
   const adviceColor = readiness.call === 'NO DATA' ? '#64748b' : !todaySession ? '#94a3b8' : readiness.color
 
@@ -278,11 +278,11 @@ export default function DashboardTab({ refreshKey, onOpenTab }: { refreshKey?: n
           {/* Fuel today */}
           {fuel && <FuelCard day={fuel} onOpen={() => onOpenTab?.('nutrition')} />}
 
-          {/* Gym today (Mon/Fri) */}
+          {/* Gym today (Mon/Fri) or the run-day routine */}
           {gymToday && (
             <div onClick={() => onOpenTab?.('gym')} role="button" style={{ background: '#111118', border: '1px solid #2a2a3a', borderRadius: '8px', padding: '16px', marginBottom: '12px', cursor: 'pointer' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '8px' }}>
-                <div style={{ color: '#64748b', fontSize: '10px', letterSpacing: '1px' }}>GYM TODAY</div>
+                <div style={{ color: '#64748b', fontSize: '10px', letterSpacing: '1px' }}>{gymToday.kind === 'run' ? 'ROUTINE TODAY' : 'GYM TODAY'}</div>
                 <div style={{ color: '#64748b', fontSize: '10px' }}>open ›</div>
               </div>
               <div style={{ color: '#e2e8f0', fontSize: '16px', fontWeight: 'bold', marginTop: '6px' }}>{gymToday.title}</div>
