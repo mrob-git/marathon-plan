@@ -196,15 +196,14 @@ export const GYM_SESSIONS: GymSession[] = [
     eyebrow: 'Peak 1 · Build week 1',
     title: 'Tier B + ankle prehab starts',
     summary: 'Back to full Tier B with 3 working sets. The new left ankle prehab block starts today, and you do the heel raise test once. Sub-threshold reps are tomorrow, so keep 2 reps in reserve on the lifts.',
-    chips: [{ text: '~65 min' }, { text: 'Isometrics 14 kg' }, { text: 'Heel raise test today', warn: true }],
+    chips: [{ text: '~60 min' }, { text: 'Isometrics 14 kg' }, { text: 'Heel raise test today', warn: true }],
     blocks: [
       PREP,
       {
-        title: 'Calf warm-up + heel raise test',
-        minutes: '~8 min',
-        note: 'Warm-up first, then the test. Put the counts in the notes box (L and R). Target: left at least 90% of right.',
+        title: 'Heel raise test',
+        minutes: '~4 min',
+        note: 'Calf warm-up dropped from 28 Nov (calf fine since the active release). Put the counts in the notes box (L and R). Target: left at least 90% of right.',
         items: [
-          ...CALF_WARMUP,
           { id: 'test-heel-raise', name: 'Test: single-leg bent-knee heel raise to fatigue', how: '1 rep every 2 s, flat ground, fingertips on a wall. Stop when height drops or form goes. Left first, full rest before right', dose: 'L + R, 1 set' },
         ],
       },
