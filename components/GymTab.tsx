@@ -6,6 +6,7 @@ import {
   GYM_SESSIONS, sessionById, allItemIds, defaultSessionId,
   COUNT_LABEL, setFilled, setLabel, bestSet, bestKg, previousSets, exerciseCatalogue,
 } from '@/lib/gym'
+import { exerciseInfo, ExerciseInfo } from '@/lib/gymExercises'
 import { todayIso, fromIso, DOW, MON } from '@/lib/nutrition'
 
 type SubTab = 'session' | 'progress'
@@ -261,6 +262,8 @@ function ExerciseRow({ item, done, sets, prev, onToggle, onSet, onCopyLast }: {
   onToggle: () => void; onSet: (i: number, f: keyof GymSet, v: string) => void; onCopyLast: (p: GymSet[]) => void
 }) {
   const spec = item.log
+  const info = exerciseInfo(item.id)
+  const [open, setOpen] = useState(false)
   return (
     <div style={{ borderTop: `1px solid ${C.border}`, padding: '10px 14px' }}>
       <div
@@ -282,7 +285,49 @@ function ExerciseRow({ item, done, sets, prev, onToggle, onSet, onCopyLast }: {
         <span style={{ color: done ? C.muted : C.dim, fontSize: '11px', whiteSpace: 'nowrap', paddingTop: '2px' }}>{item.dose}</span>
       </div>
 
+      {info && (
+        <div style={{ marginLeft: '36px', marginTop: '6px' }}>
+          <button
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            style={{ background: 'transparent', border: 'none', padding: '4px 0', color: C.dim, fontSize: '11px', fontFamily: 'inherit', cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}
+          >
+            <span style={{ display: 'inline-block', width: '12px', color: C.green }}>{open ? '▾' : '▸'}</span>
+            {open ? 'Hide details' : 'How to do it'}
+          </button>
+          {open && <ExerciseDetails info={info} />}
+        </div>
+      )}
+
       {spec && <SetTable spec={spec} sets={sets} prev={prev} onSet={onSet} onCopyLast={onCopyLast} />}
+    </div>
+  )
+}
+
+function ExerciseDetails({ info }: { info: ExerciseInfo }) {
+  const head: React.CSSProperties = { color: C.muted, fontSize: '9px', letterSpacing: '0.5px', margin: '10px 0 4px' }
+  const body: React.CSSProperties = { color: C.dim, fontSize: '12px', lineHeight: 1.5, margin: 0 }
+  const list: React.CSSProperties = { ...body, paddingLeft: '18px' }
+  return (
+    <div style={{ background: C.surface2, border: `1px solid ${C.border}`, borderRadius: '8px', padding: '10px 12px', marginTop: '4px' }}>
+      <p style={{ ...body, color: C.text }}>{info.why}</p>
+      <div style={head}>HOW</div>
+      <ol style={{ ...list, listStyleType: 'decimal' }}>{info.steps.map((t, i) => <li key={i} style={{ marginBottom: '3px' }}>{t}</li>)}</ol>
+      {info.feel && (<><div style={head}>SHOULD FEEL LIKE</div><p style={body}>{info.feel}</p></>)}
+      {info.avoid && info.avoid.length > 0 && (
+        <><div style={{ ...head, color: C.amber }}>WATCH FOR</div>
+          <ul style={{ ...list, listStyleType: 'disc' }}>{info.avoid.map((t, i) => <li key={i} style={{ marginBottom: '3px' }}>{t}</li>)}</ul></>
+      )}
+      {info.video && (
+        <a
+          href={info.video.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'inline-block', marginTop: '10px', padding: '7px 10px', borderRadius: '6px', border: `1px solid ${C.border}`, background: C.surface, color: C.green, fontSize: '11px', textDecoration: 'none', lineHeight: 1.4 }}
+        >
+          {info.video.kind === 'video' ? `▶ Watch: ${info.video.title}` : `Search YouTube: ${info.video.title}`}
+        </a>
+      )}
     </div>
   )
 }

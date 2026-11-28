@@ -356,11 +356,11 @@ function buildDevelopmentPhase(): TrainingWeek[] {
     },
     // Week 12
     {
-      note: 'Recovery week (agreed 16 Nov) with a 5K time trial on Saturday, ~3h15. The TT resets rep paces and the HR band for Peak. If anything niggles, the TT becomes 45 min easy.',
+      note: 'Recovery week (agreed 16 Nov), ~3h15. The 5K time trial moved to Sat 5 Dec (decided 28 Nov: rain and 44 km/h gusts forecast for parkrun today, calm next week).',
       sessions: [
         { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 4 x 15 sec strides — HR under 150', mins: 45 },
         { day: 'Thursday', type: 'Easy', desc: 'Easy aerobic run — HR under 150 (strides here if missed on Tuesday)', mins: 40 },
-        { day: 'Saturday', type: 'Race', desc: '5K time trial in carbons, chest strap — 15 min easy + 4 strides, 5K all out (first 3 km 4:15-4:18), 10 min easy', mins: 50 },
+        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150 (parkrun at easy effort is fine; TT moved to Sat 5 Dec)', mins: 50 },
         { day: 'Sunday', type: 'Easy', desc: 'Easy run — keep it truly easy, HR under 145', mins: 60 },
       ],
     },
@@ -391,12 +391,12 @@ function buildPeakPhase(): TrainingWeek[] {
   const weekTemplates = [
     // Week 1
     {
-      note: 'Peak 1. Build block 1 of 4. Thursday reps carry on from Development; long run starts growing.',
+      note: 'Peak 1. Build block 1 of 4. 5K time trial on Saturday (moved from 28 Nov for wind and rain), so the sub-threshold session moves to Tuesday this week (Mike, 28 Nov) and Thursday is easy. From Peak 2 reps go back to Thursday at TT-based paces. No hamstring ball work the morning of the reps or the TT. If anything niggles, the TT becomes 50 min easy.',
       sessions: [
-        { day: 'Tuesday', type: 'Easy', desc: 'Easy aerobic run + 6 x 20 sec strides — HR under 150', mins: 55 },
-        { day: 'Thursday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 6 x 4 min at HR 157-163 (~4:45-4:55/km), 60 sec jog + 10 min CD', mins: 54 },
-        { day: 'Saturday', type: 'Easy', desc: 'Easy aerobic run — HR under 150', mins: 60 },
-        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150', mins: 85 },
+        { day: 'Tuesday', type: 'Intervals', desc: 'Sub-threshold — 15 min WU + 6 x 4 min at HR 157-163 (~4:55-5:00/km, pace comes off HR), 60 sec jog + 10 min CD', mins: 54 },
+        { day: 'Thursday', type: 'Easy', desc: 'Easy aerobic run + 4 x 20 sec strides (TT warm-up rehearsal) — HR under 150', mins: 45 },
+        { day: 'Saturday', type: 'Race', desc: '5K time trial in carbons, chest strap — 15 min easy + 4 strides, 5K all out (first 3 km 4:15-4:18), 10 min easy', mins: 50 },
+        { day: 'Sunday', type: 'Long', desc: 'Easy long run — HR under 150 (cut to 75 if legs are heavy after the TT)', mins: 85 },
       ],
     },
     // Week 2
