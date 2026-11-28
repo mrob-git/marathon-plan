@@ -13,6 +13,16 @@ const HISTORY = [
   { when: '23–24 Oct 2026', what: 'Achilles / soleus', note: 'Felt walking the dog, aggravated by isometric calf raises and backwards farmer\'s carries at the gym. Long run skipped, test run clean 25 Oct, symptom-free since.' },
 ]
 
+interface Protocol {
+  condition: string
+  symptoms: string
+  acute: string[]
+  rehab: string[]
+  flag: string
+  acuteLabel?: string
+  rehabLabel?: string
+}
+
 export default function InjuryTab() {
   const [log, setLog] = useState<NiggleEntry[] | null>(null)
   const [showOthers, setShowOthers] = useState(false)
@@ -24,8 +34,52 @@ export default function InjuryTab() {
       .catch(() => setLog([]))
   }, [])
 
-  // The three that have actually happened to Mike come first.
-  const mine = [
+  // The ones that have actually happened to Mike come first.
+  // acuteLabel / rehabLabel override the column headings for routine-style cards.
+  const mine: Protocol[] = [
+    {
+      condition: 'Left-side neural tension · neck, traps, hip, hamstring, soleus',
+      symptoms: 'Comes and goes, always the left side. Treated as neural (dural) tension plus a guarding nervous system, not short muscles: calm it, make the nerves glide, then load. Phase 1 Calm 30 Nov-20 Dec, Phase 2 Glide 21 Dec-17 Jan (tensioners, hamstring isometrics, suitcase carry) if the 20 Dec retest passes, Phase 3 Hold from 18 Jan. Tests: Sun 29 Nov baseline, Sun 20 Dec, then each recovery week. Full plan: claude.ai/artifact/9XD9QHKBVb7zzgZGtK3sE1',
+      acuteLabel: 'EVERY MORNING · ~10 MIN (AFTER RESONANCE BREATHING)',
+      acute: [
+        'Breathing cues: tongue on palate, jaw soft, hand on left lower ribs; hum the exhale for the last 2 min.',
+        'Ball on head 1 min. Chin nods lying 5 x 10 s. Eye-led neck turns 5 each, left slower.',
+        'Exhale and drop: shrug in, melt the shoulders on a long out-breath, 5 reps.',
+        'Arm nerve slider (wrist back + head towards the arm) and slump slider (look up as the knee straightens): 10 left, 5 right.',
+        'Lying nerve floss (evening on run days), sideline hip openers, foot protocol, rope foot fixer, toe yoga.',
+        'Sitting is the trigger: every 30–40 min a 90 s desk reset (3 nasal breaths, 5 hip swings each leg, 5 slump sliders, look far away 20 s). Sit on sit bones, hips above knees, screen at eye level, no left-over-right leg cross.',
+        'Sleep on your back (pillow under knees) or right side (pillow between knees, pillow fills ear-to-shoulder gap). Left arm below shoulder height.',
+      ],
+      rehabLabel: 'EVENINGS + GYM',
+      rehab: [
+        'Every night: 5 min resonance breathing before bed.',
+        'Run days: hamstring routine, then neck block (~5 min, pressure 4–5/10): two tennis balls in a sock under the base of the skull, 10 tiny chin nods + 5 small turns; ball on upper trap, hold 30 s then tilt the head away 5 times; ball on levator, look down to the opposite armpit 5 times; fingers above the collarbone, tilt away and look up 5 times (scalenes, stop if it tingles); ball on pec minor while reaching the arm up 5 times.',
+        'Mon, Wed, Fri: neck block, thoracic extension over the roller (3 levels x 3 breaths), open books 8 each.',
+        'Gym from 7 Dec: band face pull with external rotation 2 x 15, prone Y raise 2 x 10 with 3 s hold.',
+        'Sliders should glide, never tingle. Stiffer next morning: drop the newest item for a week. No hard neck stretching.',
+      ],
+      flag: 'Pins and needles, numbness or weakness in an arm or leg, pain spreading below the knee or down the arm, night neck pain, or no change by the P8 retest → physio within a week (neurodynamic assessment).',
+    },
+    {
+      condition: 'Hamstring, left (Sep 2026) · mobility and release routine',
+      symptoms: 'Flared after the NSM reps in September. Peak brings reps back every Thursday from 3 Dec, so this routine runs from Fri 27 Nov (added 26 Nov). Left leg first and a bit longer. No static hamstring stretching before runs.',
+      acuteLabel: 'BEFORE EVERY RUN · 3 MIN',
+      acute: [
+        'After the ankle pre-run block (backward walk, balance, hip hikes).',
+        'Front-to-back leg swings, hand on a wall: 10 each. Start small and let the range grow; stay tall.',
+        'Hamstring scoops: heel forward, toes up, knee soft, sweep both hands past the shin as you step through. 8 each.',
+        'Walking straight-leg kicks, opposite hand reaching: 8 each. Waist height at most, controlled, not a flick.',
+      ],
+      rehabLabel: 'EVENING ON RUN DAYS (TUE, THU, SAT, SUN) · ~7 MIN',
+      rehab: [
+        'Foam roller: 60–90 s each leg, other leg crossed on top. Slow strokes from just above the back of the knee to a hand\'s width below the sit bone. Leg turned in (inner), then out (outer). Pause 3 breaths on tender spots.',
+        'Massage ball pin-and-floss on a hard chair: 2 spots per leg, pressure 5–6/10. Hold 30 s until it eases, then straighten and bend the knee slowly 10 times over the ball.',
+        'Then the lying nerve floss (rope, 10 steps, 10 foot pumps, 10 wiggle-waggles). On run days it moves here; don\'t do it twice.',
+        'No ball work the morning of a Thursday session or TT. Never press on the sit bone or behind the knee. Bruised next day = too much pressure.',
+        'Strength: single-leg bridge isometric, heel on a box, 3 x 30 s each, Mon gym from 28 Dec. No Nordics this cycle.',
+      ],
+      flag: 'Pain high up near the sit bone (worse sitting on a hard chair), or tightness that builds during Thursday reps → stop the reps, jog easy home, log it here.',
+    },
     {
       condition: 'Achilles / soleus (Oct 2026)',
       symptoms: 'Achilles: pinch-tender 2–6 cm above the heel, stiff first steps in the morning. Soleus: deep lower-calf ache, worse with the knee bent. Both flare after calf loading at the gym more than after runs.',
@@ -158,7 +212,7 @@ export default function InjuryTab() {
     'Always warm up properly for intervals and marathon pace sessions.',
   ]
 
-  const protocols = showOthers ? [...mine, ...others] : mine
+  const protocols: Protocol[] = showOthers ? [...mine, ...others] : mine
 
   return (
     <div style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
@@ -240,7 +294,7 @@ export default function InjuryTab() {
             >
               <div>
                 <div style={{ color: '#f87171', fontSize: '10px', letterSpacing: '0.5px', marginBottom: '6px' }}>
-                  ACUTE MANAGEMENT
+                  {p.acuteLabel ?? 'ACUTE MANAGEMENT'}
                 </div>
                 <ul style={{ margin: 0, padding: '0 0 0 14px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {p.acute.map((a, i) => (
@@ -250,7 +304,7 @@ export default function InjuryTab() {
               </div>
               <div>
                 <div style={{ color: '#4ade80', fontSize: '10px', letterSpacing: '0.5px', marginBottom: '6px' }}>
-                  REHAB EXERCISES
+                  {p.rehabLabel ?? 'REHAB EXERCISES'}
                 </div>
                 <ul style={{ margin: 0, padding: '0 0 0 14px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {p.rehab.map((r, i) => (
@@ -278,7 +332,7 @@ export default function InjuryTab() {
         onClick={() => setShowOthers((v) => !v)}
         style={{ marginTop: '16px', background: 'transparent', border: '1px solid #2a2a3a', color: '#94a3b8', borderRadius: '4px', padding: '6px 12px', fontFamily: 'inherit', fontSize: '10px', letterSpacing: '0.5px', cursor: 'pointer' }}
       >
-        {showOthers ? 'HIDE OTHER PROTOCOLS' : 'SHOW OTHER PROTOCOLS (PLANTAR, SHINS, HAMSTRING, FATIGUE)'}
+        {showOthers ? 'HIDE OTHER PROTOCOLS' : 'SHOW OTHER PROTOCOLS (PLANTAR, SHINS, HAMSTRING STRAIN, FATIGUE)'}
       </button>
     </div>
   )
